@@ -41,7 +41,8 @@ export default function MyOrder() {
           >
             {status}
           </span>
-        )
+        ),
+        id: 'status', // adding an id to the accessor function
       },
       {
         Header: 'Items',
@@ -71,11 +72,12 @@ export default function MyOrder() {
         <table {...getTableProps()} className="min-w-full bg-white border border-gray-200">
           <thead className="bg-gray-50">
             {headerGroups.map(headerGroup => (
-              <tr {...headerGroup.getHeaderGroupProps()} className="border-b">
+              <tr {...headerGroup.getHeaderGroupProps()} className="border-b" key={headerGroup.id}>
                 {headerGroup.headers.map(column => (
                   <th
                     {...column.getHeaderProps()}
                     className="p-4 text-left text-sm font-semibold text-gray-600"
+                    key={column.id}
                   >
                     {column.render('Header')}
                   </th>
@@ -89,7 +91,7 @@ export default function MyOrder() {
               return (
                 <tr {...row.getRowProps()} className="border-b hover:bg-gray-50" key={row.id}>
                   {row.cells.map(cell => (
-                    <td {...cell.getCellProps()} className="p-4 text-sm text-gray-700">
+                    <td {...cell.getCellProps()} className="p-4 text-sm text-gray-700" key={cell.column.id}>
                       {cell.render('Cell')}
                     </td>
                   ))}
