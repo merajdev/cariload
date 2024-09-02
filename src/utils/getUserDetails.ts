@@ -9,6 +9,7 @@ export const getUserDetails = async (token: string) => {
     });
     return response.data;
   } catch (error) {
+    console.error('Failed to fetch user details:', error);
     throw new Error('Failed to fetch user details');
   }
 };
