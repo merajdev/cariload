@@ -15,13 +15,15 @@ import { motion } from "framer-motion";
 import { cn } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { getUserDetails } from "@/utils/getUserDetails";
+import Spinner from "@/components/Spinner";
 
 
 type View = "dashboard" | "profile" | "settings";
 
 export function SidebarDemo() {
   const [view, setView] = useState<View>("dashboard");
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -149,18 +151,50 @@ export const Logo = () => {
 };
 
 const Dashboard = () => {
+  const [user, setUser] = useState<{ name: string, email: string; role: string } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
     const authData = localStorage.getItem('authData');
+    if (authData) {
+      const { token } = JSON.parse(authData);
+      getUserDetails(token)
+        .then((data) => {
+          setUser(data.user);
+        })
+        .catch((err) => {
+          setError(err.message);
+          router.push('/login'); // Redirect to login if fetching user details fails
+        });
+    } else {
+      router.push('/login'); // Redirect to login if token is not found
+    }
+  }, [router]);
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>; // Display error message
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Spinner size="w-12 h-12" color="#3498db" />
+        {/* Customize size and color */}
+      </div>
+    ); // You can add a spinner or skeleton here
+  }
 
   return (
     <div className="p-4 md:p-10 bg-white rounded-lg shadow-md flex-1">
       <h1 className="text-2xl font-bold">User Dashboard</h1>
-      <h1>
-        {authData ? `Welcome, ${JSON.parse(authData).email}` : 'Welcome, User'}
-      </h1>
+      <p>{user.email}</p>
+      <p>{user.name}</p>
+      <p>{user.role}</p>
+
     </div>
   );
 };
-
 const Profile = () => {
   return (
     <div className="p-4 md:p-10 bg-white rounded-lg shadow-md flex-1">

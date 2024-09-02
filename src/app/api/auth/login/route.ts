@@ -20,16 +20,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: false, error: 'Invalid credentials' }, { status: 401 });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role, email: user.email }, process.env.JWT_SECRET || 'secret', {
+    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET || 'secret', {
       expiresIn: '1d',
     });
 
-    return NextResponse.json({ success: true, token, role: user.role, email: user.email }, { status: 200 });
+    return NextResponse.json({ success: true, token, role: user.role }, { status: 200 });
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ success: false, error: error.message }, { status: 400 });
-    } else {
-      return NextResponse.json({ success: false, error: 'An unknown error occurred' }, { status: 400 });
-    }
+    return NextResponse.json({ success: false, error: 'An error occurred during login' }, { status: 400 });
   }
 }

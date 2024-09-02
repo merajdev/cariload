@@ -9,14 +9,19 @@ import { IoLogOut } from 'react-icons/io5';
 import { RiMenu5Line } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { logout } from "@/redux/slice/authSlice";
 import axios from 'axios';
+import { FiLogOut } from 'react-icons/fi';
+import { MdDashboard } from 'react-icons/md';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
-
+    const pathname = usePathname();
+    
     const handleLogout = async () => {
         try {
             await axios.get('/api/auth/logout');
@@ -27,6 +32,11 @@ const Navbar: React.FC = () => {
             console.error('Logout failed:', error.message);
         }
     };
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
     const toggleSidebar = () => {
         setIsOpen(!isOpen);
     };
@@ -38,7 +48,7 @@ const Navbar: React.FC = () => {
         <div className="relative">
             {/* Sidebar */}
             <div
-                className={`fixed z-50 inset-0 bg-white text-neutral-800 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}
+                className={`fixed z-50 inset-0 bg-white text-neutral-600 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}
             >
                 <div className="flex justify-between p-4">
                     <Link href={'/'} className="ps-6 text-lg font-bold text-blue-600">Logo</Link>
@@ -48,30 +58,40 @@ const Navbar: React.FC = () => {
                     </button>
                 </div>
                 <nav className="mt-8 space-y-4 px-6">
-                    <Link href={'/'} className='block py-2 px-4 hover:bg-blue-600 hover:text-white rounded'>Home</Link>
-                    <Link href={'/about'} className='block py-2 px-4 hover:bg-blue-600 hover:text-white rounded'>About</Link>
-                    <Link href={'/services'} className='block py-2 px-4 hover:bg-blue-600 hover:text-white rounded'>Services</Link>
-                    <Link href={'/contact'} className='block py-2 px-4 hover:bg-blue-600 hover:text-white rounded'>Contact</Link>
+                    <Link href={'/'} className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>Home</Link>
+                    <Link href={'/about'} className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>About</Link>
+                    <Link href={'/services'} className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>Services</Link>
+                    <Link href={'/contact'} className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>Contact</Link>
                 </nav>
             </div>
 
             {/* Main Navbar */}
             <div className="fixed z-10 w-full top-0 p-4">
-                <div className="max-w-4xl mx-auto p-2 px-4 bg-neutral-100 rounded rounded-full text-neutral-800 flex items-center justify-between">
+                <div className="max-w-4xl mx-auto p-2 px-4 bg-neutral-100 rounded rounded-full text-neutral-600 flex items-center justify-between">
                     <Link href={'/'} className="text-xl font-bold text-blue-600">Logo</Link>
                     <div className="md:hidden flex text-sm gap-3">
                         {
                             isAuthenticated ? (
-                                <div className="flex gap-2">
-                                    <Link href={userRole == 'owner' ? '/owner-dashboard' : '/user-dashboard'} className='border-2 border-blue-500 bg-blue-500 hover:bg-neutral-900 text-white flex justify-center items-center w-8 h-8 rounded-full'>
-                                        <FaUser className=' w-4 h-4' />
-                                    </Link>
-                                    <Link href={'/login'}
-                                        onClick={handleLogout}
-                                        className='border-2 border-red-500 hover:bg-neutral-900 text-white flex justify-center items-center w-8 h-8 rounded-full'
+                                <div className="relative group">
+                                    <button
+                                        className="bg-neutral-200 text-neutral-600 hover:bg-neutral-300 hover:text-neutral-700 flex justify-center items-center w-10 h-10 rounded-full"
                                     >
-                                        <IoLogOut className='text-red-500 w-4 h-4' />
-                                    </Link>
+                                        <FaUser className='w-4 h-4' />
+                                    </button>
+                                    <div className="absolute right-0 w-40 border-2 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
+                                        <Link
+                                            href={userRole == 'owner' ? '/owner-dashboard' : '/user-dashboard'}
+                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        >
+                                            Dashboard
+                                        </Link>
+                                        <button
+                                            onClick={handleLogout}
+                                            className="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                                        >
+                                            Logout
+                                        </button>
+                                    </div>
                                 </div>
                             ) : (
                                 <Link href={'/login'} className='bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2 rounded-full'>Login</Link>
@@ -82,26 +102,37 @@ const Navbar: React.FC = () => {
                         </button>
                     </div>
                     <nav className="hidden md:flex space-x-4">
-                        <Link href="/" className="hover:bg-blue-600 hover:text-white px-4 py-2 rounded-full">Home</Link>
-                        <Link href="/about" className="hover:bg-blue-600 hover:text-white px-4 py-2 rounded-full">About</Link>
-                        <Link href="/services" className="hover:bg-blue-600 hover:text-white px-4 py-2 rounded-full">Services</Link>
-                        <Link href="/contact" className="hover:bg-blue-600 hover:text-white px-4 py-2 rounded-full">Contact</Link>
-                        {
-                            isAuthenticated ? (
-                                <div className="flex gap-3">
-                                    <Link href={userRole == 'owner' ? '/owner-dashboard' : '/user-dashboard'} className='bg-blue-600 hover:bg-blue-700 flex justify-center items-center w-10 h-10 text-white  rounded-full'>
-                                        <FaUser className='w-4 h-4' />
-                                    </Link>
-                                    <Link href={'/login'}
-                                        onClick={handleLogout}
-                                        className='border-2 border-red-500 hover:bg-red-500 text-red-500 hover:text-white flex justify-center items-center w-10 h-10  rounded-full'
+                        <Link href="/" className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>Home</Link>
+                        <Link href="/about" className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>About</Link>
+                        <Link href="/services" className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>Services</Link>
+                        <Link href="/contact" className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-neutral-200 text-neutral-700' : 'hover:bg-neutral-200 hover:text-neutral-700'}`}>Contact</Link>
+                        {isAuthenticated ? (
+                            <div className="relative group">
+                                <button
+                                    className="bg-neutral-200 text-neutral-600 hover:bg-neutral-300 hover:text-neutral-700 flex justify-center items-center w-10 h-10 rounded-full"
+                                >
+                                    <FaUser className='w-4 h-4' />
+                                </button>
+                                <div className="absolute right-0 w-40 border-2 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
+                                    <Link
+                                        href={userRole == 'owner' ? '/owner-dashboard' : '/user-dashboard'}
+                                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     >
-                                        <IoLogOut className='w-4 h-4' />
+                                        <MdDashboard className='w-4 h-4' />
+                                        Dashboard
                                     </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                                    >
+                                        <FiLogOut className='w-4 h-4' />
+                                        Logout
+                                    </button>
                                 </div>
-                            ) : (
-                                <Link href={'/login'} className='bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2 rounded-full'>Login</Link>
-                            )
+                            </div>
+                        ) : (
+                            <Link href={'/login'} className='bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2 rounded-full'>Login</Link>
+                        )
                         }
                     </nav>
                 </div>
