@@ -87,7 +87,7 @@ export default function MyOrder() {
             {rows.map(row => {
               prepareRow(row);
               return (
-                <tr {...row.getRowProps()} className="border-b hover:bg-gray-50">
+                <tr {...row.getRowProps()} className="border-b hover:bg-gray-50" key={row.id}>
                   {row.cells.map(cell => (
                     <td {...cell.getCellProps()} className="p-4 text-sm text-gray-700">
                       {cell.render('Cell')}
