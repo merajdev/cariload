@@ -34,11 +34,10 @@ export const Dashboard = () => {
 
     if (!user) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
+            <div className="min-h-[90vh] flex items-center justify-center">
                 <Spinner size="w-12 h-12" color="#3498db" />
-                {/* Customize size and color */}
             </div>
-        ); // You can add a spinner or skeleton here
+        );
     }
 
     return (

@@ -43,7 +43,7 @@ export default function SupportHelp() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50">
       <h1 className="text-3xl font-bold mb-6 text-center">Support & Help</h1>
 
       <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { FaDownload, FaEye } from 'react-icons/fa';
+import { IoMdClose } from 'react-icons/io';
 
 interface Payment {
   id: number;
@@ -69,15 +71,15 @@ export default function PaymentHistory() {
               <div className="flex gap-2">
                 <button
                   onClick={() => viewDetails(payment)}
-                  className="bg-blue-500 h-min text-white py-1 px-3 rounded-lg hover:bg-blue-600 transition"
+                  className="bg-blue-100 h-min text-blue-500 p-3 rounded-lg hover:bg-blue-200 transition"
                 >
-                  View
+                  <FaEye />
                 </button>
                 <button
                   onClick={() => downloadReceipt(payment)}
-                  className="bg-green-500 h-min text-white py-1 px-3 rounded-lg hover:bg-green-600 transition"
+                  className="bg-green-100 h-min text-green-600 p-3 rounded-lg hover:bg-green-200 transition"
                 >
-                  Download
+                  <FaDownload />
                 </button>
               </div>
             </div>
@@ -89,18 +91,20 @@ export default function PaymentHistory() {
       {selectedPayment && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
-            <h2 className="text-xl font-semibold mb-4">Transaction Details</h2>
+            <div className="flex justify-between">
+              <h2 className="text-xl font-semibold">Transaction Details</h2>
+              <button
+                onClick={closeDetails}
+                className="bg-red-100 text-red-600 p-2 rounded-md hover:bg-red-200 transition"
+              >
+                <IoMdClose />
+              </button>
+            </div>
             <p><strong>Order ID:</strong> {selectedPayment.orderId}</p>
             <p><strong>Payment Method:</strong> {selectedPayment.paymentMethod}</p>
             <p><strong>Amount:</strong> {selectedPayment.amount}</p>
             <p><strong>Date:</strong> {selectedPayment.date}</p>
             <p><strong>Status:</strong> {selectedPayment.status}</p>
-            <button
-              onClick={closeDetails}
-              className="mt-4 bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600 transition"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}

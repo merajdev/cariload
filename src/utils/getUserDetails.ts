@@ -1,15 +1,25 @@
 import axios from 'axios';
 
-export const getUserDetails = async (token: string) => {
+const api = axios.create({
+  baseURL: process.env.DOMAIN, // Use the environment variable
+});
+
+export async function getUserDetails(token: string) {
   try {
-    const response = await axios.get('/api/auth/user', {
+    const response = await api.get('/api/auth/user', {
       headers: {
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
     });
-    return response.data;
+
+    if (response.status === 200) {
+      return response.data;
+    } else {
+      throw new Error('Failed to fetch user details');
+    }
   } catch (error) {
-    console.error('Failed to fetch user details:', error);
-    throw new Error('Failed to fetch user details');
+    console.error('Error fetching user details:', error);
+    throw error;
   }
-};
+}

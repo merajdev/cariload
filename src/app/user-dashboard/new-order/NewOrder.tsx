@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import axios from 'axios';
 
@@ -23,7 +25,7 @@ const NewOrder: React.FC = () => {
   const [showSummary, setShowSummary] = useState<boolean>(false);
 
   const handleReviewOrder = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent default form submission behavior
+    event.preventDefault();
 
     // Validate required fields before showing the summary
     if (!pickupAddress || !shippingAddress || !packageDetails.size || !truckOption || !paymentMethod) {
@@ -34,24 +36,24 @@ const NewOrder: React.FC = () => {
     setError('');
     setShowSummary(true);
   };
-
+  
   const handlePlaceOrder = async () => {
     try {
       const authData = localStorage.getItem('authData');
-
+  
       if (!authData) {
         setError('No authentication data found. Please log in.');
         return;
       }
-
+  
       const parsedAuthData = JSON.parse(authData);
       const { token } = parsedAuthData;
-
+  
       if (!token) {
         setError('No token found. Please log in.');
         return;
       }
-
+  
       const orderData = {
         pickupAddress,
         shippingAddress,
@@ -59,18 +61,16 @@ const NewOrder: React.FC = () => {
         truckOption,
         paymentMethod,
       };
-
-      // Simulate an API call
+  
       const response = await axios.post('/api/orders', orderData, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
         },
       });
-
+  
       if (response.status === 201) {
         alert('Order placed successfully!');
-        // Reset form after submission
         setPickupAddress('');
         setShippingAddress('');
         setPackageDetails({ size: '', weight: '', type: '', instructions: '' });
@@ -85,6 +85,7 @@ const NewOrder: React.FC = () => {
       console.error(error);
     }
   };
+  
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -236,9 +237,11 @@ const NewOrder: React.FC = () => {
             <p><strong>Special Instructions:</strong> {packageDetails.instructions}</p>
             <p><strong>Truck Option:</strong> {truckOption}</p>
             <p><strong>Payment Method:</strong> {paymentMethod}</p>
+
+            {/* Place Order Button */}
             <button
               onClick={handlePlaceOrder}
-              className="w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition mt-4"
+              className="mt-6 w-full bg-green-500 text-white py-2 px-4 rounded-md hover:bg-green-600 transition"
             >
               Place Order
             </button>

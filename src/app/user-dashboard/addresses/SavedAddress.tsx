@@ -1,4 +1,7 @@
+
+'use client';
 import React, { useState } from 'react';
+import { FaTrashAlt } from 'react-icons/fa';
 
 interface Address {
   id: number;
@@ -41,15 +44,14 @@ export default function SavedAddress() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div className="bg-gray-50">
         {/* Manage Addresses */}
         <h2 className="text-xl font-semibold mb-4">Manage Addresses</h2>
         {addresses.length > 0 ? (
-          <ul className="mb-6">
+          <ul className="grid sm:grid-cols-2 md:grid-cols-3 mb-6 gap-3">
             {addresses.map(address => (
-              <li key={address.id} className="mb-4 flex justify-between items-center p-4 bg-gray-100 rounded-lg">
-                <div>
+              <li key={address.id} className="mb-4 gap-2 md:flex justify-between p-4 bg-gray-100 rounded-lg">
+                <div className='mb-3'>
                   <p><strong>Street:</strong> {address.street}</p>
                   <p><strong>City:</strong> {address.city}</p>
                   <p><strong>State:</strong> {address.state}</p>
@@ -58,9 +60,9 @@ export default function SavedAddress() {
                 </div>
                 <button
                   onClick={() => deleteAddress(address.id)}
-                  className="bg-red-500 text-white py-1 px-3 rounded-lg hover:bg-red-600 transition"
+                  className="bg-red-100 h-min text-red-500 p-3 rounded-lg hover:bg-red-200 transition"
                 >
-                  Delete
+                  <FaTrashAlt />
                 </button>
               </li>
             ))}
@@ -76,7 +78,7 @@ export default function SavedAddress() {
             e.preventDefault();
             addAddress();
           }}
-          className="mb-6"
+          className="mb-6 max-w-lg"
         >
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
             <input
@@ -132,7 +134,6 @@ export default function SavedAddress() {
             Save Address
           </button>
         </form>
-      </div>
     </div>
   );
 }

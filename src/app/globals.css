@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.bzRuyo{
+    padding: 0px !important;
+}
+
+.cPHygs{
+    justify-content: left !important;
+    padding: 0px !important;
+}

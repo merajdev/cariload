@@ -1,38 +1,24 @@
-// models/Order.ts
-import mongoose, { Document, Schema } from 'mongoose';
-import User from './user.model'; // Import the User model
+import mongoose, { Schema, model, models } from 'mongoose';
 
-interface PackageDetails {
-  size: string;
-  weight: string;
-  type: string;
-  instructions: string;
-}
-
-interface Order extends Document {
-  user: Schema.Types.ObjectId; // Reference to the User
-  pickupAddress: string;
-  shippingAddress: string;
-  packageDetails: PackageDetails;
-  truckOption: string;
-  paymentMethod: string;
-}
-
-const packageDetailsSchema = new Schema({
+const PackageDetailsSchema = new Schema({
   size: { type: String, required: true },
   weight: { type: String, required: true },
   type: { type: String, required: true },
-  instructions: { type: String, default: '' },
+  instructions: { type: String },
 });
 
-const orderSchema = new Schema<Order>({
-  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+const OrderSchema = new Schema({
   pickupAddress: { type: String, required: true },
   shippingAddress: { type: String, required: true },
-  packageDetails: { type: packageDetailsSchema, required: true },
-  truckOption: { type: String, required: true },
-  paymentMethod: { type: String, required: true },
+  packageDetails: PackageDetailsSchema,
+  truckOption: { type: String, enum: ['small', 'medium', 'large'], required: true },
+  paymentMethod: { type: String, enum: ['credit_card', 'debit_card', 'paypal', 'cod'], required: true },
+  status: { type: String, default: 'pending' },
+  user: { type: Schema.Types.ObjectId, ref: 'User', required: true },  // Reference to the User model
+}, {
+  timestamps: true,
 });
 
-const OrderModel = mongoose.models.Order || mongoose.model<Order>('Order', orderSchema);
-export default OrderModel;
+const Order = models.Order || model('Order', OrderSchema);
+
+export default Order;

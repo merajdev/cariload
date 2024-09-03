@@ -45,35 +45,33 @@ export default function TrackOrder() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white p-4 md:p-6 rounded-lg shadow-md">
-        {/* Order Tracking Map */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold mb-4">Order Tracking</h2>
-          <div className="h-64 bg-gray-200 rounded-lg flex items-center justify-center">
-            <p className="text-gray-700 px-3 text-center">Map showing the truck&#39;s current location here</p>
-            {/* Replace this placeholder with an actual map component, like Google Maps or Leaflet */}
-          </div>
+    <div className="bg-gray-50">
+      {/* Order Tracking Map */}
+      <div className="mb-6">
+        <h2 className="text-xl font-semibold mb-4">Order Tracking</h2>
+        <div className="h-72 bg-gray-200 rounded-lg flex items-center justify-center">
+          <p className="text-gray-700 px-3 text-center">Map showing the truck&#39;s current location here</p>
+          {/* Replace this placeholder with an actual map component, like Google Maps or Leaflet */}
         </div>
+      </div>
 
-        {/* Order Status Updates */}
+      {/* Order Status Updates */}
+      <div className="p-2 md:p-4 border-2 max-w-md rounded">
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">Order Status</h2>
-          <div className="p-4 bg-gray-100 rounded-lg">
-            <p className="text-lg"><strong>Current Status:</strong> {orderStatus}</p>
-            <p className="text-lg"><strong>Estimated Delivery:</strong> {estimatedDelivery}</p>
+          <div className="p-2 md:p-4 bg-gray-100 rounded-lg">
+            <p className="text-md"><strong>Current Status:</strong> {orderStatus}</p>
+            <p className="text-md"><strong>Estimated Delivery:</strong> {estimatedDelivery}</p>
           </div>
         </div>
 
         {/* Contact Driver */}
-        <div className="mb-4">
           <button
             onClick={handleContactDriver}
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition"
           >
             Contact Driver
           </button>
-        </div>
       </div>
     </div>
   );
