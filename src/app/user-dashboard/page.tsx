@@ -20,7 +20,7 @@ import { TbGpsFilled } from "react-icons/tb";
 import { MdContactSupport, MdDashboard, MdPayments } from "react-icons/md";
 import { IoIosNotifications, IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
-import MyOrder from "./my-order/page";
+import MyOrder from "./my-order/MyOrder";
 import NewOrder from "./new-order/NewOrder";
 import TrackOrder from "./track-order/TrackOrder";
 import SavedAddress from "./addresses/SavedAddress";
@@ -210,7 +210,7 @@ const UserDashboard: FC = () => {
     <>
       {
         isLoading &&
-        (<div className="min-h-screen flex items-center justify-center">
+        (<div className="min-h-[92vh] flex items-center justify-center">
           <Spinner color="#3498db" />
           {/* Customize size and color */}
         </div>)
@@ -244,7 +244,7 @@ const UserDashboard: FC = () => {
                   icon: <FaUserCircle className="text-neutral-700 h-5 w-5" />,
                 }}
                 onClick={() => 
-                  setView("profile")
+                  handleLinkClick("profile")
                 }
               />
             </div>

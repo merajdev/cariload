@@ -18,7 +18,7 @@ export function HeroSection() {
         },
         {
             text: "Loads and Trucks",
-            className: "text-blue-600",
+            className: "text-indigo-500",
         },
     ];
 
@@ -37,12 +37,12 @@ export function HeroSection() {
             </p>
             <TypewriterEffectSmooth words={words} />
             <div className="flex gap-3 mt-4">
-                <button className="px-8 py-3 rounded-xl bg-blue-600 border-2 border-transparent text-white text-sm">
+                <button className="px-8 py-3 rounded-xl bg-indigo-500 border-2 border-transparent text-white text-sm">
                     Join now
                 </button>
                 <Link
                     href={'/signup'}
-                    className="px-8 py-3 rounded-xl text-center hover:bg-blue-600 text-blue-600 hover:text-white border-2 border-blue-600 text-sm"
+                    className="px-8 py-3 rounded-xl text-center hover:bg-indigo-500 text-indigo-500 hover:text-white border-2 border-indigo-500 text-sm"
                 >
                     Signup
                 </Link>

@@ -55,12 +55,12 @@ export default function PaymentHistory() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50">
       {/* Payments Overview */}
-      <h2 className="text-xl font-semibold mb-4">Payments Overview</h2>
-      <ul className="mb-6">
+      <h2 className="text-2xl font-semibold mb-4">Payments Overview</h2>
+      <ul className="mb-6 grid md:grid-cols-3 gap-3">
         {payments.map((payment) => (
-          <li key={payment.id} className="mb-4 max-w-md flex justify-between items-center p-4 bg-gray-100 rounded-lg">
+          <li key={payment.id} className="mb-4flex justify-between items-center p-4 bg-gray-100 rounded-lg">
             <div className="block w-full md:flex md:justify-between gap-3">
               <div>
                 <p><strong>Order ID:</strong> {payment.orderId}</p>

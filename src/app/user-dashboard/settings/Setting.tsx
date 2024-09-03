@@ -79,12 +79,12 @@ export const Setting = () => {
   };
 
   return (
-    <div className="mx-auto max-w-2xl p-4 md:p-6 bg-white rounded-lg shadow-md flex-1">
-      <h1 className="text-2xl font-bold mb-6">Account Settings</h1>
+    <div className="">
+      <h1 className="text-2xl font-semibold mb-6">Account Settings</h1>
 
       {/* Profile Settings */}
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="mb-8">
+      <div className="max-w-4xl grid md:grid-cols-2 gap-6">
+        <div className="border-2 p-4 rounded mb-8">
           <h2 className="text-xl font-semibold mb-4">Profile Settings</h2>
           <form onSubmit={handleProfileUpdate}>
             <div className="grid gap-4 mb-6">
@@ -134,7 +134,7 @@ export const Setting = () => {
         </div>
 
         {/* Change Password */}
-        <div className="mb-8">
+        <div className="border-2 p-4 rounded mb-8">
           <h2 className="text-xl font-semibold mb-4">Change Password</h2>
           <form onSubmit={handlePasswordChangeSubmit}>
             <div className="grid gap-4 mb-6">

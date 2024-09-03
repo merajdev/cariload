@@ -48,7 +48,7 @@ export default function TrackOrder() {
     <div className="bg-gray-50">
       {/* Order Tracking Map */}
       <div className="mb-6">
-        <h2 className="text-xl font-semibold mb-4">Order Tracking</h2>
+        <h2 className="text-2xl font-semibold mb-4">Order Tracking</h2>
         <div className="h-72 bg-gray-200 rounded-lg flex items-center justify-center">
           <p className="text-gray-700 px-3 text-center">Map showing the truck&#39;s current location here</p>
           {/* Replace this placeholder with an actual map component, like Google Maps or Leaflet */}

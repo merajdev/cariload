@@ -1,3 +1,4 @@
+import Spinner from '@/components/Spinner';
 import { useState, useEffect } from 'react';
 
 interface Notification {
@@ -51,15 +52,17 @@ export const Notification = () => {
   }, []);
 
   return (
-    <div className="max-w-lg">
-      <h1 className="text-2xl font-bold mb-6">Notifications</h1>
+    <div className="">
+      <h1 className="text-2xl font-semibold mb-6">Notifications</h1>
 
       {loading ? (
-        <div className="text-center">Loading...</div>
+        <div className="min-h-[70vh] flex items-center justify-center">
+          <Spinner size="w-12 h-12" color="#3498db" />
+        </div>
       ) : notifications.length === 0 ? (
         <div className="text-center text-gray-500">No notifications found.</div>
       ) : (
-        <div className="space-y-4">
+        <div className="max-w-lg space-y-4">
           {notifications.map(notification => (
             <div
               key={notification.id}

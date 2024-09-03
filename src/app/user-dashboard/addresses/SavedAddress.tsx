@@ -46,7 +46,7 @@ export default function SavedAddress() {
   return (
     <div className="bg-gray-50">
         {/* Manage Addresses */}
-        <h2 className="text-xl font-semibold mb-4">Manage Addresses</h2>
+        <h2 className="text-2xl font-semibold mb-4">Manage Addresses</h2>
         {addresses.length > 0 ? (
           <ul className="grid sm:grid-cols-2 md:grid-cols-3 mb-6 gap-3">
             {addresses.map(address => (
