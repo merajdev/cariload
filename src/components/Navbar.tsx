@@ -14,6 +14,7 @@ import { logout } from "@/redux/slice/authSlice";
 import axios from 'axios';
 import { FiLogOut } from 'react-icons/fi';
 import { MdDashboard } from 'react-icons/md';
+import { Logo } from './Logo';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +28,10 @@ const Navbar: React.FC = () => {
             await axios.get('/api/auth/logout');
             localStorage.removeItem('authData');
             dispatch(logout());
-            router.push('/login');
+            // You can add a toast notification here for better UX
+
+
+            router.push('/');
         } catch (error: any) {
             console.error('Logout failed:', error.message);
         }
@@ -51,7 +55,10 @@ const Navbar: React.FC = () => {
                 className={`fixed z-50 inset-0 bg-white text-indigo-600 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out`}
             >
                 <div className="flex justify-between p-4">
-                    <Link href={'/'} className="ps-6 text-lg font-bold text-indigo-600">Logo</Link>
+                    <Link href={'/'} className="flex items-center ps-6 text-md font-bold text-indigo-600">
+                        <Logo />
+                        Cari Load
+                    </Link>
 
                     <button onClick={toggleSidebar}>
                         <IoMdClose className="w-6 h-6" />
@@ -61,32 +68,35 @@ const Navbar: React.FC = () => {
                     <Link
                         href={'/'}
                         onClick={toggleSidebar}
-                        className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>Home</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Home</Link>
                     <Link
                         onClick={toggleSidebar}
                         href={'/about'}
-                        className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>About</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>About</Link>
                     <Link
                         onClick={toggleSidebar}
                         href={'/services'}
-                        className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>Services</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Services</Link>
                     <Link
                         onClick={toggleSidebar}
                         href={'/contact'}
-                        className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>Contact</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Contact</Link>
                 </nav>
             </div>
 
             {/* Main Navbar */}
-            <div className="fixed z-10 w-full top-0 p-4">
-                <div className="max-w-4xl mx-auto py-1 md:py-2 px-4 bg-white border rounded rounded-full text-indigo-600 flex items-center justify-between">
-                    <Link href={'/'} className="text-xl font-bold text-indigo-600">Logo</Link>
+            <div className="fixed z-30 w-full top-0 p-4">
+                <div className="md:w-10/12 mx-auto py-1 md:py-2 px-4 bg-white border rounded rounded-full text-indigo-600 flex items-center justify-between">
+                    <Link href={'/'} className="flex items-center text-xl font-bold text-indigo-600">
+                        <Logo />
+                        Cari Load
+                    </Link>
                     <div className="md:hidden flex text-sm gap-3">
                         {
                             isAuthenticated ? (
                                 <div className="relative group">
                                     <button
-                                        className="bg-indigo-100 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full"
+                                        className="bg-indigo-50 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full"
                                     >
                                         <FaUser className='w-4 h-4' />
                                     </button>
@@ -116,14 +126,14 @@ const Navbar: React.FC = () => {
                         </button>
                     </div>
                     <nav className="hidden md:flex space-x-4">
-                        <Link href="/" className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>Home</Link>
-                        <Link href="/about" className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>About</Link>
-                        <Link href="/services" className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>Services</Link>
-                        <Link href="/contact" className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-100 text-indigo-700 font-semibold' : 'hover:bg-indigo-100 hover:text-indigo-700'}`}>Contact</Link>
+                        <Link href="/" className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Home</Link>
+                        <Link href="/about" className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>About</Link>
+                        <Link href="/services" className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Services</Link>
+                        <Link href="/contact" className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Contact</Link>
                         {isAuthenticated ? (
                             <div className="relative group">
                                 <button
-                                    className="bg-indigo-100 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full"
+                                    className="bg-indigo-50 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full"
                                 >
                                     <FaUser className='w-4 h-4' />
                                 </button>
@@ -145,8 +155,10 @@ const Navbar: React.FC = () => {
                                 </div>
                             </div>
                         ) : (
-                            <Link href={'/login'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>Login</Link>
-                        )
+                            <div className="flex gap-2">
+                                <Link href={'/login'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>Login</Link>
+                                <Link href={'/signup'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>Signup</Link>
+                            </div>)
                         }
                     </nav>
                 </div>

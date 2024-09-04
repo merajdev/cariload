@@ -66,7 +66,27 @@ export default function MyOrder() {
   useEffect(() => {
     async function fetchOrders() {
       try {
-        const response = await fetch('/api/orders');
+        const authData = localStorage.getItem('authData');
+
+        if (!authData) {
+          setError('No authentication data found. Please log in.');
+          return;
+        }
+
+        const parsedAuthData = JSON.parse(authData);
+        const { token } = parsedAuthData;
+
+        if (!token) {
+          setError('No token found. Please log in.');
+          return;
+        }
+
+        const response = await fetch('/api/orders', {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

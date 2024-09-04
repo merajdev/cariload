@@ -35,7 +35,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/auth/signup', formData);
-      router.push('/login');
+      router.push('/');
       console.log(response.data);
     } catch (err) {
       if (err instanceof Error) {
@@ -123,18 +123,18 @@ const Signup = () => {
 
             <div className="m-auto p-4">
               <div className='flex items-center justify-between'>
-                <Link href='/' className='text-center flex items-center text-sm text-neural-800 hover:text-neutral-900 hover:underline font-semibold'>
+                <Link href={'/'} className='text-center flex items-center text-sm text-neural-800 hover:text-neutral-900 hover:underline font-semibold'>
                   <FaArrowLeftLong className="me-2" /> Back to Home
                 </Link>
-                <Link href='/' className='text-center text-xl text-indigo-500 font-bold'>Logo</Link>
+                <Link href={'/'} className='text-center text-xl text-indigo-500 font-bold'>Logo</Link>
               </div>
               <div className="mt-12 flex flex-col items-center">
-                <Link href='/' className="text-2xl xl:text-3xl font-extrabold">
+                <Link href={'/'} className="text-2xl xl:text-3xl font-extrabold">
                   Sign up
                 </Link>
                 <p className="text-sm xl:text-base text-gray-600 mt-2">
                   Already have an account?
-                  <Link href='/login' className="text-indigo-500 border-b border-indigo-500 border-dotted">
+                  <Link href={'/login'} className="text-indigo-500 border-b border-indigo-500 border-dotted">
                     Login
                   </Link>
                 </p>

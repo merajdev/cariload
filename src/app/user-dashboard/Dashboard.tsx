@@ -24,7 +24,7 @@ export const Dashboard = () => {
                     router.push('/login'); // Redirect to login if fetching user details fails
                 });
         } else {
-            router.push('/login'); // Redirect to login if token is not found
+            router.push('/'); // Redirect to login if token is not found
         }
     }, [router]);
 

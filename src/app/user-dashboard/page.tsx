@@ -29,7 +29,17 @@ import SupportHelp from "./support-help/SupportHelp";
 import { Notification } from "./notification/Notification";
 import { getUserDetails } from "@/utils/getUserDetails";
 
-type View = "dashboard" | "myOrders" | "newOrders" | "trackOrders" | "savedAddresses" | "paymentHistory" | "notifications" | "supportHelp" | "profile" | "settings";
+type View =
+  "dashboard" |
+  "myOrders" |
+  "newOrders" |
+  "trackOrders" |
+  "savedAddresses" |
+  "paymentHistory" |
+  "notifications" |
+  "supportHelp" |
+  "profile" |
+  "settings";
 
 const UserDashboard: FC = () => {
   const { isAuthenticated, isLoading, userRole } = useAuth();
@@ -243,7 +253,7 @@ const UserDashboard: FC = () => {
                   href: "#",
                   icon: <FaUserCircle className="text-neutral-700 h-5 w-5" />,
                 }}
-                onClick={() => 
+                onClick={() =>
                   handleLinkClick("profile")
                 }
               />

@@ -94,11 +94,11 @@ export default function Login() {
 
             <div className="m-auto p-4">
               <div className='flex items-center justify-between'>
-                <Link href='/' className='text-center flex items-center text-sm text-sm text-neural-800 hover:text-neutral-900 hover:underline font-semibold'>
+                <Link href={'/'} className='text-center flex items-center text-sm text-sm text-neural-800 hover:text-neutral-900 hover:underline font-semibold'>
                   <FaArrowLeftLong className="me-2" />
                   Back to Home
                 </Link>
-                <Link href='/' className='text-center text-xl text-indigo-500 font-bold'>Logo</Link>
+                <Link href={'/'} className='text-center text-xl text-indigo-500 font-bold'>Logo</Link>
               </div>
               <div className="mt-12 flex flex-col items-center">
                 <h1 className="text-2xl xl:text-3xl font-extrabold">
@@ -106,7 +106,7 @@ export default function Login() {
                 </h1>
                 <p className="text-sm xl:text-base text-gray-600 mt-2">
                   Don not have an account?
-                  <Link href='/signup' className="text-indigo-500 border-b border-indigo-500 border-dotted">
+                  <Link href={'/signup'} className="text-indigo-500 border-b border-indigo-500 border-dotted">
                     Sign up
                   </Link>
                 </p>

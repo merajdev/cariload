@@ -21,11 +21,32 @@ const orderSchema = z.object({
 
 export async function GET(req: NextRequest) {
   try {
+    // Extract the token from headers
+    const authHeader = req.headers.get('Authorization') || '';
+    const token = authHeader.split(' ')[1];
+
+    if (!token) {
+      return NextResponse.json({ error: 'No token provided' }, { status: 401 });
+    }
+
     // Connect to the database
     await dbConnect();
 
-    // Fetch all orders from the database
-    const orders = await Order.find();
+    // Get user details
+    const userResponse = await getUserDetails(token);
+    if (!userResponse.success) {
+      return NextResponse.json({ error: userResponse.error }, { status: 401 });
+    }
+
+    const user = userResponse.user;
+
+    // Validate that the userId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(user._id)) {
+      return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 });
+    }
+
+    // Fetch orders from the database that belong to the user
+    const orders = await Order.find({ user: user._id });
 
     return NextResponse.json({ orders }, { status: 200 });
   } catch (error) {
