@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, ChangeEvent, FormEvent } from 'react';
+import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -13,7 +13,13 @@ import Spinner from '@/components/Spinner';
 
 const Signup = () => {
   const router = useRouter();
-  const { isLoading } = useAuth();
+  const { isLoading, isAuthenticated } = useAuth();
+  
+  useEffect(() => {
+    if ( isAuthenticated) {
+      router.push('/'); // Redirect to a dashboard or any other page
+    }
+  }, [isAuthenticated, router]);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -129,9 +135,9 @@ const Signup = () => {
                 <Link href={'/'} className='text-center text-xl text-indigo-500 font-bold'>Logo</Link>
               </div>
               <div className="mt-12 flex flex-col items-center">
-                <Link href={'/'} className="text-2xl xl:text-3xl font-extrabold">
+                <h2 className="text-2xl xl:text-3xl font-extrabold">
                   Sign up
-                </Link>
+                </h2>
                 <p className="text-sm xl:text-base text-gray-600 mt-2">
                   Already have an account?
                   <Link href={'/login'} className="text-indigo-500 border-b border-indigo-500 border-dotted">

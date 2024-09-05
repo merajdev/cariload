@@ -28,6 +28,7 @@ import PaymentHistory from "./payment-history/PaymentHistory";
 import SupportHelp from "./support-help/SupportHelp";
 import { Notification } from "./notification/Notification";
 import { getUserDetails } from "@/utils/getUserDetails";
+import { toast } from "react-toastify";
 
 type View =
   "dashboard" |
@@ -76,7 +77,16 @@ const UserDashboard: FC = () => {
       await axios.get('/api/auth/logout');
       localStorage.removeItem('authData');
       dispatch(logout());
-      router.push('/login');
+
+      toast.success('Logout successful!', {
+        position: "top-right",
+      });
+
+      // Delay to allow UI update before redirect
+      setTimeout(() => {
+        router.push('/login');
+      }, 1000);
+
     } catch (error: any) {
       console.error('Logout failed:', error.message);
     }

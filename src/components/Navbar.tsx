@@ -1,9 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import useAuth from '@/hooks/useAuth';
 import { FaUser } from 'react-icons/fa';
 import { IoLogOut } from 'react-icons/io5';
 import { RiMenu5Line } from 'react-icons/ri';
@@ -15,6 +14,10 @@ import axios from 'axios';
 import { FiLogOut } from 'react-icons/fi';
 import { MdDashboard } from 'react-icons/md';
 import { Logo } from './Logo';
+import useAuth from '@/hooks/useAuth';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import Spinner from './Spinner';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -23,19 +26,35 @@ const Navbar: React.FC = () => {
     const router = useRouter();
     const pathname = usePathname();
 
+    const { isAuthenticated, userRole, isLoading, setIsAuthenticated, setUserRole } = useAuth();
+
     const handleLogout = async () => {
         try {
             await axios.get('/api/auth/logout');
             localStorage.removeItem('authData');
+
+            // Update local states to reflect logout immediately
             dispatch(logout());
-            // You can add a toast notification here for better UX
+            setIsAuthenticated(false);
+            setUserRole(null);
 
+            toast.success('Logout successful!', {
+                position: "top-center",
+            });
 
-            router.push('/');
+            // Delay to allow UI update before redirect
+            setTimeout(() => {
+                return null;
+            }, 500);
         } catch (error: any) {
+            toast.error('Logout failed. Please try again!', {
+                position: "top-center",
+            });
             console.error('Logout failed:', error.message);
         }
     };
+
+
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
@@ -45,8 +64,13 @@ const Navbar: React.FC = () => {
         setIsOpen(!isOpen);
     };
 
-    const { isAuthenticated, userRole } = useAuth();
-
+    if (isLoading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <Spinner size="w-12 h-12" color="#3498db" />
+            </div>
+        ); // Optionally add a loading spinner or skeleton UI here
+    }
 
     return (
         <div className="relative">
@@ -68,78 +92,90 @@ const Navbar: React.FC = () => {
                     <Link
                         href={'/'}
                         onClick={toggleSidebar}
-                        className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Home</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                        Home
+                    </Link>
                     <Link
                         onClick={toggleSidebar}
                         href={'/about'}
-                        className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>About</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                        About
+                    </Link>
                     <Link
                         onClick={toggleSidebar}
                         href={'/services'}
-                        className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Services</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                        Services
+                    </Link>
                     <Link
                         onClick={toggleSidebar}
                         href={'/contact'}
-                        className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Contact</Link>
+                        className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                        Contact
+                    </Link>
                 </nav>
             </div>
 
             {/* Main Navbar */}
             <div className="fixed z-30 w-full top-0 p-4">
-                <div className="md:w-10/12 mx-auto py-1 md:py-2 px-4 bg-white border rounded rounded-full text-indigo-600 flex items-center justify-between">
+                <div className="md:w-8/12 mx-auto py-1 md:py-2 px-4 bg-white border rounded-full text-indigo-600 flex items-center justify-between">
                     <Link href={'/'} className="flex items-center text-xl font-bold text-indigo-600">
                         <Logo />
                         Cari Load
                     </Link>
                     <div className="md:hidden flex text-sm gap-3">
-                        {
-                            isAuthenticated ? (
-                                <div className="relative group">
-                                    <button
-                                        className="bg-indigo-50 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full"
+                        {isAuthenticated ? (
+                            <div className="relative group">
+                                <button className="bg-indigo-50 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full">
+                                    <FaUser className='w-4 h-4' />
+                                </button>
+                                <div className="absolute right-0 w-40 border-2 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
+                                    <Link
+                                        href={userRole === 'owner' ? '/owner-dashboard' : '/user-dashboard'}
+                                        className="flex items-center gap-2  block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     >
-                                        <FaUser className='w-4 h-4' />
+                                        <MdDashboard className='w-4 h-4' />
+                                        Dashboard
+                                    </Link>
+                                    <button
+                                        onClick={handleLogout}
+                                        className="flex items-center gap-2 block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
+                                    >
+                                        <FiLogOut className='w-4 h-4' />
+                                        Logout
                                     </button>
-                                    <div className="absolute right-0 w-40 border-2 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
-                                        <Link
-                                            href={userRole == 'owner' ? '/owner-dashboard' : '/user-dashboard'}
-                                            className="flex items-center gap-2  block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                                        >
-                                            <MdDashboard className='w-4 h-4' />
-                                            Dashboard
-                                        </Link>
-                                        <button
-                                            onClick={handleLogout}
-                                            className="flex items-center gap-2  block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-100"
-                                        >
-                                            <FiLogOut className='w-4 h-4' />
-                                            Logout
-                                        </button>
-                                    </div>
                                 </div>
-                            ) : (
-                                <Link href={'/login'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>Login</Link>
-                            )
-                        }
+                            </div>
+                        ) : (
+                            <Link href={'/login'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>
+                                Login
+                            </Link>
+                        )}
                         <button className="" onClick={toggleSidebar}>
                             <RiMenu5Line className="w-6 h-6" />
                         </button>
                     </div>
                     <nav className="hidden md:flex space-x-4">
-                        <Link href="/" className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Home</Link>
-                        <Link href="/about" className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>About</Link>
-                        <Link href="/services" className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Services</Link>
-                        <Link href="/contact" className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>Contact</Link>
+                        <Link href="/" className={`px-4 py-2 rounded-full ${pathname === '/' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                            Home
+                        </Link>
+                        <Link href="/about" className={`px-4 py-2 rounded-full ${pathname === '/about' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                            About
+                        </Link>
+                        <Link href="/services" className={`px-4 py-2 rounded-full ${pathname === '/services' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                            Services
+                        </Link>
+                        <Link href="/contact" className={`px-4 py-2 rounded-full ${pathname === '/contact' ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'hover:bg-indigo-50 hover:text-indigo-700'}`}>
+                            Contact
+                        </Link>
                         {isAuthenticated ? (
                             <div className="relative group">
-                                <button
-                                    className="bg-indigo-50 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full"
-                                >
+                                <button className="bg-indigo-50 text-indigo-600 hover:bg-indigo-200 hover:text-indigo-700 flex justify-center items-center w-10 h-10 rounded-full">
                                     <FaUser className='w-4 h-4' />
                                 </button>
                                 <div className="absolute right-0 w-40 border-2 bg-white rounded-lg shadow-lg py-2 hidden group-hover:block">
                                     <Link
-                                        href={userRole == 'owner' ? '/owner-dashboard' : '/user-dashboard'}
+                                        href={userRole === 'owner' ? '/owner-dashboard' : '/user-dashboard'}
                                         className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                     >
                                         <MdDashboard className='w-4 h-4' />
@@ -156,15 +192,19 @@ const Navbar: React.FC = () => {
                             </div>
                         ) : (
                             <div className="flex gap-2">
-                                <Link href={'/login'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>Login</Link>
-                                <Link href={'/signup'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>Signup</Link>
-                            </div>)
-                        }
+                                <Link href={'/login'} className='bg-indigo-600 hover:bg-indigo-700 text-white text-center px-4 py-2 rounded-full'>
+                                    Login
+                                </Link>
+                            </div>
+                        )}
                     </nav>
                 </div>
             </div>
+
+            {/* Toast Container */}
+            <ToastContainer />
         </div>
     );
-};
+}
 
 export default Navbar;

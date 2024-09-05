@@ -13,7 +13,6 @@ export default function Home() {
       <AboutSection />
       <VideoBanner />
       <Servicesection />
-      <Footer />
     </>
   );
 }

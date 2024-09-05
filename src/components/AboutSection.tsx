@@ -54,8 +54,8 @@ export function AboutSection() {
                                 </div>
                             </div>
                         </div>
-                        <Link href={'/about'} className="flex w-max items-center bg-indigo-500 text-white hover:bg-indigo-600 px-6 py-3 rounded">
-                            More About Us
+                        <Link href={'/about'} className="flex w-max items-center text-sm bg-indigo-500 text-white hover:bg-indigo-600 px-6 py-3 rounded">
+                            More About Us <FaArrowRightLong className="ms-2" />
                         </Link>
                     </div>
 

@@ -25,7 +25,7 @@ export function Customers() {
   return (
     <div className="flex flex-row items-center mb-6 w-full">
       <AnimatedTooltip items={people} />
-      <div className="text-neutral-700 ms-6">
+      <div className="text-neutral-100 ms-6">
         <h5 className="text-xs md:text-xl font-bold">
           Customer Satisfied
         </h5>
