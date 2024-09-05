@@ -107,7 +107,7 @@ export default function Login() {
                   Login
                 </h1>
                 <p className="text-sm xl:text-base text-gray-600 mt-2">
-                  Don't have an account?
+                  Do not have an account?
                   <button
                     onClick={() => router.push('/signup')}
                     className="text-indigo-500 border-b border-indigo-500 border-dotted ml-1">
