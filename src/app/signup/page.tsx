@@ -41,7 +41,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post('/api/auth/signup', formData);
-      router.push('/');
+      router.push('/login');
       console.log(response.data);
     } catch (err) {
       if (err instanceof Error) {

@@ -117,8 +117,9 @@ const Navbar: React.FC = () => {
             </div>
 
             {/* Main Navbar */}
-            <div className="fixed z-30 w-full top-0 p-4">
-                <div className="md:w-8/12 mx-auto py-1 md:py-2 px-4 bg-white border rounded-full text-indigo-600 flex items-center justify-between">
+            <div className="fixed z-30 w-full top-0">
+                
+                <div className="mx-auto py-1 md:py-2 px-4 bg-white border text-indigo-600 flex items-center justify-between">
                     <Link href={'/'} className="flex items-center text-xl font-bold text-indigo-600">
                         <Logo />
                         Cari Load

@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -13,6 +14,7 @@ export const HoverEffect = ({
     title: string;
     description: string;
     link: string;
+    image: string;
   }[];
   className?: string;
 }) => {
@@ -21,7 +23,7 @@ export const HoverEffect = ({
   return (
     <div
       className={cn(
-        "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10",
+        "grid grid-cols-1 md:grid-cols-2 gap-4 py-10",
         className
       )}
     >
@@ -29,7 +31,7 @@ export const HoverEffect = ({
         <Link
           href={item?.link}
           key={item?.link}
-          className="relative group  block p-2 h-full w-full"
+          className="relative group  block h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
         >
@@ -51,6 +53,7 @@ export const HoverEffect = ({
             )}
           </AnimatePresence>
           <Card>
+            <img src={item.image} alt={item.title} className="rounded-xl" />
             <CardTitle>{item.title}</CardTitle>
             <CardDescription>{item.description}</CardDescription>
           </Card>
@@ -75,7 +78,7 @@ export const Card = ({
       )}
     >
       <div className="relative z-50">
-        <div className="p-4">{children}</div>
+        <div className="p-3">{children}</div>
       </div>
     </div>
   );
@@ -103,7 +106,7 @@ export const CardDescription = ({
   return (
     <p
       className={cn(
-        "mt-8 text-neutral-700 tracking-wide leading-relaxed text-sm",
+        "mt-4 text-neutral-700 tracking-wide leading-relaxed text-sm",
         className
       )}
     >

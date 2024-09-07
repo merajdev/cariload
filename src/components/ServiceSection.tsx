@@ -1,9 +1,13 @@
 import { HoverEffect } from "@/components/ui/card-hover-effect";
 import { BsDashLg } from "react-icons/bs";
+import freightBrokerage from "/public/images/freightBrokerage.jpg";
+import transportation from "/public/images/transportation.jpg";
+import warehousing from "/public/images/warehousing.jpg";
+import drivingTraining from "/public/images/drivingTraining.jpg";
 
 export function Servicesection() {
     return (
-        <div className="md:w-10/12 mx-auto px-4">
+        <div className="md:w-8/12 mx-auto px-4">
             <div className="flex flex-col items-center">
                 <h5 className="text-xs font-bold flex items-center mb-3 text-neutral-500">
                     <BsDashLg className="text-3xl text-indigo-500 me-2" />
@@ -22,21 +26,31 @@ export function Servicesection() {
 }
 export const projects = [
     {
-        title: "Title",
+        title: "Freight Brokerage",
         description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Nullam nec nunc nec nunc.",
         link: "#",
+        image: freightBrokerage.src,
     },
     {
-        title: "Title",
+        title: "Transportation",
         description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Nullam nec nunc nec nunc.",
         link: "#",
+        image: transportation.src,
     },
     {
-        title: "Title",
+        title: "Warehousing",
         description:
             "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Nullam nec nunc nec nunc.",
         link: "#",
+        image: warehousing.src,
+    },
+    {
+        title: "Driving Training",
+        description:
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan arcu. Nullam nec nunc nec nunc.",
+        link: "#",
+        image: drivingTraining.src,
     },
 ];

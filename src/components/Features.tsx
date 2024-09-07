@@ -9,13 +9,14 @@ import { FaSackDollar } from "react-icons/fa6";
 import { TbGpsFilled } from "react-icons/tb";
 import { RiSecurePaymentFill } from "react-icons/ri";
 import { MdContactSupport } from "react-icons/md";
+import { FaUserCheck } from "react-icons/fa";
 
 export function Features() {
     const features = [
         {
             id: "01",
             title: "Cost Effectiveness",
-            description: "Reducing service fees by 40%, making logistics more affordable for everyone.",
+            description: "Reducing service fees, making logistics more affordable for everyone.",
             icon: (
                 <FaSackDollar className="text-5xl" />
             )
@@ -39,20 +40,21 @@ export function Features() {
             )
 
         },
-        // {
-        //     title: "24/7 Support",
-        //     description: "We provide 24/7 support to ensure that you have a smooth experience.",
-        //     icon:(
-        //         <MdContactSupport className="text-4xl text-indigo-500" />
-        //     )
+        {
+            id: "04",
+            title: "Customer verification",
+            description: "We verify all our customers to ensure that they are legitimate.",
+            icon: (
+                <FaUserCheck className="text-5xl" />
+            )
 
-        // },
+        },
     ];
 
     return (
         <>
             <div className="md:w-10/12 mx-auto flex flex-col items-center justify-center px-4 py-10 md:py-28">
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
                     {features.map((feature, index) => (
                         <div key={index} className="gap-3 flex flex-col md:flex-row md:items-center md:justify-center p-4 md:p-2 border-2 border-indigo-100 rounded-tl-2xl rounded-br-2xl">
                             <div className="w-min h-full flex flex-col p-6 gap-3 items-center justify-center bg-indigo-50 text-indigo-500 rounded-tl-xl rounded-br-xl">
@@ -62,7 +64,7 @@ export function Features() {
                                     </h2>
                             </div>
                             <div className="">
-                                <h3 className="text-xl font-semibold text-indigo-500 mb-3">{feature.title}</h3>
+                                <h3 className="text-xl font-semibold text-indigo-500 mb-2">{feature.title}</h3>
                                 <p className="text-md text-neutral-600">{feature.description}</p>
                             </div>
                         </div>

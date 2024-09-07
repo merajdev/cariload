@@ -13,7 +13,6 @@ import { Customers } from "./Customers";
 
 export function HeroSection() {
     const images = [
-        "https://firebasestorage.googleapis.com/v0/b/meraj-courses.appspot.com/o/hero.svg?alt=media&token=ceeffffb-e723-4839-bb44-2ea71b645bfd",
         "https://firebasestorage.googleapis.com/v0/b/meraj-courses.appspot.com/o/hero2.png?alt=media&token=515bbc59-5320-4d29-9622-9a77f263c09d",
         "https://firebasestorage.googleapis.com/v0/b/meraj-courses.appspot.com/o/hero3.png?alt=media&token=60a33ed4-f3c4-4c08-98f6-cc4233bfe076",
         "https://firebasestorage.googleapis.com/v0/b/meraj-courses.appspot.com/o/hero4.png?alt=media&token=c85d9259-ca65-4150-a5ee-42fe6d1b7d97",
