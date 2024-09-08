@@ -19,7 +19,6 @@ export async function POST(req: Request) {
     // Generate and send OTP
     const verifyOtp = generateOtp();
     const otpExpiry = new Date(Date.now() + 60 * 60 * 1000); // OTP valid for 1 hour
-    console.log(email, name, password, role, verifyOtp, otpExpiry);
 
     const transporter = nodemailer.createTransport({
       service: 'Gmail',

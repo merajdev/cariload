@@ -1,11 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
-export default function VerifyOtp() {
+function VerifyOtpForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const emailParam = searchParams.get('email') || '';
@@ -48,5 +48,13 @@ export default function VerifyOtp() {
         {error && <p className="text-red-500 mt-4">{error}</p>}
       </div>
     </div>
+  );
+}
+
+export default function VerifyOtp() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyOtpForm />
+    </Suspense>
   );
 }

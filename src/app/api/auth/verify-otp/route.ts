@@ -15,8 +15,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ success: false, message: 'User not found' });
   }
 
-  console.log(email, user.otp);
-
   // Check if OTP is valid and not expired
   if (user.otp !== otp) {
     return NextResponse.json({ success: false, message: 'Invalid OTP' });
