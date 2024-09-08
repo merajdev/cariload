@@ -12,7 +12,7 @@ export async function getUserDetails(token: string) {
         'Content-Type': 'application/json',
       },
     });
-
+    // console.log(response.data.u)
     if (response.status === 200) {
       return response.data;
     } else {

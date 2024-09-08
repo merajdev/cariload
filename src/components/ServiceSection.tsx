@@ -7,7 +7,7 @@ import drivingTraining from "/public/images/drivingTraining.jpg";
 
 export function Servicesection() {
     return (
-        <div className="md:w-8/12 mx-auto px-4">
+        <div className="md:w-10/12 mx-auto px-4">
             <div className="flex flex-col items-center">
                 <h5 className="text-xs font-bold flex items-center mb-3 text-neutral-500">
                     <BsDashLg className="text-3xl text-indigo-500 me-2" />

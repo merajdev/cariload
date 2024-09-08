@@ -34,6 +34,7 @@ const useAuth = () => {
     checkAuth();
   }, [router]);
 
+
   return { isAuthenticated, userRole, isLoading, setIsAuthenticated, setUserRole };
 };
 

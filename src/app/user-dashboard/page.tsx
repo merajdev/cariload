@@ -5,7 +5,6 @@ import { logout } from "@/redux/slice/authSlice";
 import { useDispatch } from "react-redux";
 import { Sidebar, SidebarBody, SidebarLink } from "@/components/ui/sidebar";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { cn } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import axios from "axios";
@@ -52,21 +51,36 @@ const UserDashboard: FC = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const authData = localStorage.getItem('authData');
-    if (authData) {
-      const { token } = JSON.parse(authData);
-      getUserDetails(token)
-        .then((data) => {
-          setUser(data.user);
-        })
-        .catch((err) => {
-          setError(err.message);
-          router.push('/login'); // Redirect to login if fetching user details fails
-        });
-    } else {
-      router.push('/login'); // Redirect to login if token is not found
+    if (typeof window !== 'undefined') {
+      const authData = localStorage.getItem('authData');
+      if (authData) {
+        try {
+          const { role } = JSON.parse(authData);
+
+          if (role !== 'user') {
+            router.push('/');
+            return;
+          }
+
+          const { token } = JSON.parse(authData);
+          getUserDetails(token)
+            .then((data) => {
+              setUser(data.user);
+            })
+            .catch((err) => {
+              setError(err.message);
+              router.push('/login'); // Redirect to login if fetching user details fails
+            });
+        } catch (error) {
+          console.error("Error parsing authData:", error);
+          router.push('/login'); // Redirect if parsing fails
+        }
+      } else {
+        router.push('/login'); // Redirect to login if token is not found
+      }
     }
   }, [router]);
+
 
   if (error) {
     return <div className="text-red-500">{error}</div>; // Display error message

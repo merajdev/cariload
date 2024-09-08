@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/user.model';
+import Owner from '@/models/owner.model';
 
 export async function GET(req: NextRequest) {
   await dbConnect();
@@ -16,8 +17,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const decoded: any = jwt.verify(token, process.env.JWT_SECRET || 'secret');
-    const user = await User.findById(decoded.id).select('-password');
-
+    const user = await User.findById(decoded.id).select('-password') || await Owner.findById(decoded.id).select('-password');
     if (!user) {
       return NextResponse.json({ success: false, error: 'User not found' }, { status: 404 });
     }

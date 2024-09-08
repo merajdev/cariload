@@ -1,123 +1,88 @@
 'use client';
 
-import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
-import bgImage from '/public/images/trackTrruck.png'
-import Link from 'next/link';
-import { FaArrowLeftLong } from 'react-icons/fa6';
-import useAuth from '@/hooks/useAuth';
 import Spinner from '@/components/Spinner';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import useAuth from '@/hooks/useAuth'
+import { FaArrowLeftLong } from 'react-icons/fa6';
+import bgImage from '/public/images/trackTrruck.png';
+import { useRouter } from 'next/navigation';
 
 
-const Signup = () => {
+export default function SignUp() {
+  const [loading, setLoading] = useState(false); // Loading state
   const router = useRouter();
   const { isLoading, isAuthenticated } = useAuth();
-  
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [role, setRole] = useState('user');
+  const [otp, setOtp] = useState('');
+  const [otpSent, setOtpSent] = useState(false);
+  const [error, setError] = useState('');
+
   useEffect(() => {
-    if ( isAuthenticated) {
+    if (isAuthenticated) {
       router.push('/'); // Redirect to a dashboard or any other page
     }
   }, [isAuthenticated, router]);
 
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    role: 'user', // default role
-    password: ''
-  });
-  const [error, setError] = useState('');
 
-  const handleChange = (e: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true); // Start loading
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, name, password, role }),
+    });
+
+    console.log(res)
+
+    const data = await res.json();
+    if (data.success) {
+      setOtpSent(true);
+    } else {
+      setError(data.message);
+    }
+
+    setLoading(false); // End loading
+
   };
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleVerifyOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const response = await axios.post('/api/auth/signup', formData);
-      router.push('/login');
-      console.log(response.data);
-    } catch (err) {
-      if (err instanceof Error) {
-        setError(err.message);
-      }
+    const res = await fetch('/api/auth/verify-otp', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, role, otp }),
+    });
+
+    const data = await res.json();
+    if (data.success) {
+      window.location.href = '/login';
+    } else {
+      setError('Invalid OTP');
     }
   };
 
   return (
     <>
-      {/* <div className="px-4 h-screen">
-        <form onSubmit={handleSubmit} className="max-w-md h-max mx-auto border-2 rounded space-y-4 p-6 mt-12">
-          <h1 className="text-2xl font-bold mb-4">Sign Up</h1>
-          {error && <p className="text-red-500 mb-4">{error}</p>}
-          <div>
-            <label className="block mb-1">Name</label>
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="border p-2 w-full"
-              required
-            />
-          </div>
-          <div>
-            <label className="block mb-1">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="border p-2 w-full"
-              required
-            />
-          </div>
-          <div>
-            <label className="block mb-1">Role</label>
-            <select
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-              className="border p-2 w-full"
-              required
-            >
-              <option value="user">User</option>
-              <option value="owner">Owner</option>
-            </select>
-          </div>
-          <div>
-            <label className="block mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="border p-2 w-full"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white p-2 w-full"
-          >
-            Sign Up
-          </button>
-        </form>
-      </div> */}
-
       {isLoading ? (
         <div className="min-h-screen flex items-center justify-center">
           <Spinner size="w-12 h-12" color="#3498db" />
         </div>
       ) : (
-        <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center md:p-8">
-          <div className="max-w-screen-xl bg-white shadow sm:rounded-lg flex justify-between p-4 flex-1">
+        <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center md:p-4">
+          <div className="md:grid md:grid-cols-2 bg-white shadow sm:rounded-lg flex justify-between p-4 flex-1">
             <div className="hidden lg:flex items-center w-full justify-center">
               <Image
                 src={bgImage}
@@ -127,69 +92,91 @@ const Signup = () => {
               />
             </div>
 
-            <div className="m-auto p-4">
+            <div className="m-auto p-4 md:px-12">
               <div className='flex items-center justify-between'>
                 <Link href={'/'} className='text-center flex items-center text-sm text-neural-800 hover:text-neutral-900 hover:underline font-semibold'>
                   <FaArrowLeftLong className="me-2" /> Back to Home
                 </Link>
                 <Link href={'/'} className='text-center text-xl text-indigo-500 font-bold'>Logo</Link>
               </div>
-              <div className="mt-12 flex flex-col items-center">
-                <h2 className="text-2xl xl:text-3xl font-extrabold">
-                  Sign up
-                </h2>
+              <div className="mt-6 flex flex-col items-center">
                 <p className="text-sm xl:text-base text-gray-600 mt-2">
                   Already have an account?
                   <Link href={'/login'} className="text-indigo-500 border-b border-indigo-500 border-dotted">
                     Login
                   </Link>
                 </p>
-                <div className="w-full flex-1 mt-8">
-                  <form onSubmit={handleSubmit}>
-                    <input
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white"
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Name"
-                      required
-                    />
-                    <input
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="Email"
-                      required
-                    />
-                    <select
-                      name="role"
-                      value={formData.role}
-                      onChange={handleChange}
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                      required
-                    >
-                      <option value="user">User</option>
-                      <option value="owner">Owner</option>
-                    </select>
+                <div className="w-full flex-1 mt-4">
+                  <form onSubmit={otpSent ? handleVerifyOtp : handleSignUp}>
+                    <h2 className="text-2xl text-center font-bold mb-6">{otpSent ? 'Verify OTP' : 'Sign Up'}</h2>
+                    {!otpSent && (
+                      <>
+                        <input
+                          type="text"
+                          id="name"
+                          value={name}
+                          placeholder='Name'
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                          className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                        />
+                        <input
+                          type="email"
+                          id="email"
+                          value={email}
+                          placeholder='Email'
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                          className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                        />
+                        <input
+                          type="password"
+                          id="password"
+                          value={password}
+                          placeholder='Password'
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                          className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                        />
+                        <input
+                          type="password"
+                          id="confirmPassword"
+                          value={confirmPassword}
+                          placeholder='Confirm Password'
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          required
+                          className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                        />
+                        <select
+                          id="role"
+                          value={role}
+                          onChange={(e) => setRole(e.target.value)}
+                          className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                        >
+                          <option value="user">User</option>
+                          <option value="owner">Owner</option>
+                        </select>
+                      </>
+                    )}
 
-                    <input
-                      className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                      type="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleChange}
-                      placeholder="Password"
-                      required
-                    />
+                    {otpSent && (
+                      <input
+                        type="text"
+                        id="otp"
+                        value={otp}
+                        placeholder='Enter your OTP'
+                        onChange={(e) => setOtp(e.target.value)}
+                        required
+                        className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
+                      />
+                    )}
 
+                    {error && <p className="mt-2 text-red-600">{error}</p>}
                     <button
-                      className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                       type="submit"
+                      className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                     >
-                      Sign Up
+                      {otpSent ? 'Verify OTP' : 'Sign Up'}
                     </button>
                   </form>
 
@@ -210,6 +197,4 @@ const Signup = () => {
       )}
     </>
   );
-};
-
-export default Signup;
+}

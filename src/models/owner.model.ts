@@ -1,6 +1,6 @@
 import mongoose, { Schema, model, models } from 'mongoose';
 
-const UserSchema = new mongoose.Schema({
+const OwnerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -12,8 +12,8 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['user'],
-    default: 'user',
+    enum: ['owner'],
+    default: 'owner',
   },
   password: {
     type: String,
@@ -31,5 +31,5 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-const User = mongoose.models.User || mongoose.model('User', UserSchema);
-export default User;
+const Owner = mongoose.models.Owner || mongoose.model('Owner', OwnerSchema);
+export default Owner;

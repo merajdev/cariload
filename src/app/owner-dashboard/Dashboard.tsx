@@ -4,7 +4,8 @@ import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import banner from "/public/images/banner.svg"
 import Image from "next/image";
-import { FaTruckLoading } from "react-icons/fa";
+import { FaTools, FaTruck, FaTruckLoading } from "react-icons/fa";
+import { FaMoneyBills, FaTruckArrowRight, FaTruckFast } from "react-icons/fa6";
 
 export const Dashboard = () => {
     const [user, setUser] = useState<{ name: string, email: string; role: string } | null>(null);
@@ -49,10 +50,10 @@ export const Dashboard = () => {
                     alt="Cover"
                     className="w-full h-full object-cover rounded-lg"
                 />
+                {/* User Image and Welcome Message */}
                 <p className='absolute z-10 top-2 left-2 bg-indigo-500 text-white px-2 py-0.5 text-sm rounded-full w-min mb-2'>
                     {user.role}
                 </p>
-                {/* User Image and Welcome Message */}
                 <div className="absolute inset-0 flex items-center justify-center">
                     <h2 className="text-xl px-4 md:text-3xl text-center font-semibold text-neutral-100">
                         Welcome, {user ? user.name : "User"}!
@@ -61,49 +62,61 @@ export const Dashboard = () => {
             </div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                <div className="p-4 md:p-10 bg-white rounded-lg border-2 flex-1">
-                    <div className="flex items-center sm:justify-center gap-3">
+                <div className="p-4 md:p-6 bg-white rounded-lg border-2 flex-1">
+                    <div className="flex items-center gap-3">
                         <div className="bg-blue-100 rounded-full p-4 md:p-6">
-                            <FaTruckLoading className="text-4xl text-blue-500" />
+                            <FaTruck className="text-4xl text-blue-500" />
                         </div>
                         <div className="block">
-                            <p className="text-neutral-800 text-md">Total orders</p>
+                            <p className="text-neutral-800 text-sm">Total Trucks</p>
                             <h1 className="text-4xl font-bold">11</h1>
                         </div>
                     </div>
                 </div>
 
-                <div className="p-4 md:p-10 bg-white rounded-lg border-2 flex-1">
-                    <div className="flex items-center sm:justify-center gap-3">
+                <div className="p-4 md:p-6 bg-white rounded-lg border-2 flex-1">
+                    <div className="flex items-center gap-3">
                         <div className="bg-red-100 rounded-full p-4 md:p-6">
-                            <FaTruckLoading className="text-4xl text-red-500" />
+                            <FaTruckFast className="text-4xl text-red-500" />
                         </div>
                         <div className="block">
-                            <p className="text-neutral-800 text-md">Pending orders</p>
+                            <p className="text-neutral-800 text-sm">Trucks Currently on Trip</p>
                             <h1 className="text-4xl font-bold">02</h1>
                         </div>
                     </div>
                 </div>
 
-                <div className="p-4 md:p-10 bg-white rounded-lg border-2 flex-1">
-                    <div className="flex items-center sm:justify-center gap-3">
+                <div className="p-4 md:p-6 bg-white rounded-lg border-2 flex-1">
+                    <div className="flex items-center gap-3">
                         <div className="bg-yellow-100 rounded-full p-4 md:p-6">
-                            <FaTruckLoading className="text-4xl text-yellow-500" />
+                            <FaTools className="text-4xl text-yellow-500" />
                         </div>
                         <div className="block">
-                            <p className="text-neutral-800 text-md">Active orders</p>
+                            <p className="text-neutral-800 text-sm">Upcoming Maintenance</p>
                             <h1 className="text-4xl font-bold">03</h1>
                         </div>
                     </div>
                 </div>
 
-                <div className="p-4 md:p-10 bg-white rounded-lg border-2 flex-1">
-                    <div className="flex items-center sm:justify-center gap-3">
+                <div className="p-4 md:p-6 bg-white rounded-lg border-2 flex-1">
+                    <div className="flex items-center gap-3">
                         <div className="bg-green-100 rounded-full p-4 md:p-6">
-                            <FaTruckLoading className="text-4xl text-green-500" />
+                            <FaMoneyBills className="text-4xl text-green-500" />
                         </div>
                         <div className="block">
-                            <p className="text-neutral-800 text-md">Completed orders</p>
+                            <p className="text-neutral-800 text-sm">Revenue Summary</p>
+                            <h1 className="text-4xl font-bold">06</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="p-4 md:p-6 bg-white rounded-lg border-2 flex-1">
+                    <div className="flex items-center gap-3">
+                        <div className="bg-green-100 rounded-full p-4 md:p-6">
+                            <FaTruckArrowRight className="text-4xl text-green-500" />
+                        </div>
+                        <div className="block">
+                            <p className="text-neutral-800 text-sm">Number of Active Drivers</p>
                             <h1 className="text-4xl font-bold">06</h1>
                         </div>
                     </div>
