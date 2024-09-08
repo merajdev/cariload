@@ -10,15 +10,25 @@ const generateOtp = () => Math.floor(100000 + Math.random() * 900000).toString()
 export async function POST(req: Request) {
   await dbConnect();
 
-
   try {
     const { name, email, role, password } = await req.json();
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (!name || !email || !role || !password) {
+      return new Response(JSON.stringify({ success: false, error: 'All fields are required' }), { status: 400 });
+    }
 
-    // Generate and send OTP
+    if (!['user', 'owner'].includes(role)) {
+      return new Response(JSON.stringify({ success: false, error: 'Invalid role' }), { status: 400 });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
     const verifyOtp = generateOtp();
     const otpExpiry = new Date(Date.now() + 60 * 60 * 1000); // OTP valid for 1 hour
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return new Response(JSON.stringify({ success: false, error: 'Email already exists' }), { status: 400 });
+    }
 
     const transporter = nodemailer.createTransport({
       service: 'Gmail',
@@ -35,38 +45,33 @@ export async function POST(req: Request) {
       text: `Your OTP is: ${verifyOtp}`,
     });
 
-    if (role == 'user') {
-      const newUser = await User.create({
+    let newUser;
+    if (role === 'user') {
+      newUser = await User.create({
         name,
         email,
         role,
         password: hashedPassword,
         otp: verifyOtp,
-        otpExpiry: otpExpiry,
+        otpExpiry,
         emailVerified: false,
       });
-
-      return new Response(JSON.stringify({ success: true, user: newUser }), { status: 201 });
-    }
-
-    if(role == 'owner'){
-      const newOwner = await Owner.create({
+    } else if (role === 'owner') {
+      newUser = await Owner.create({
         name,
         email,
         role,
         password: hashedPassword,
         otp: verifyOtp,
-        otpExpiry: otpExpiry,
+        otpExpiry,
         emailVerified: false,
       });
-      return new Response(JSON.stringify({ success: true, user: newOwner }), { status: 201 });
     }
+
+    return new Response(JSON.stringify({ success: true, user: newUser }), { status: 201 });
 
   } catch (error) {
-    if (error instanceof Error) {
-      return new Response(JSON.stringify({ success: false, error: error.message }), { status: 400 });
-    } else {
-      return new Response(JSON.stringify({ success: false, error: 'An unknown error occurred' }), { status: 400 });
-    }
+    console.error(error); // Log error for debugging
+    return new Response(JSON.stringify({ success: false, error: error }), { status: 400 });
   }
 }
