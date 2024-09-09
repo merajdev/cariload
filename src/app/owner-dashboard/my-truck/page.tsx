@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import DataTable from 'react-data-table-component';
 import { FaPlusCircle, FaEdit, FaTools, FaMapMarkerAlt } from 'react-icons/fa';
