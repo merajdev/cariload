@@ -17,7 +17,7 @@ import Spinner from '@/components/Spinner';
 import { FaBell, FaTruck, FaUserCircle, FaUserFriends } from "react-icons/fa";
 import { TbGpsFilled } from "react-icons/tb";
 import { MdContactSupport, MdDashboard, MdPayments } from "react-icons/md";
-import {  IoIosNotifications, IoMdAnalytics, IoMdSettings } from "react-icons/io";
+import { IoIosNotifications, IoMdAnalytics, IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { getUserDetails } from "@/utils/getUserDetails";
 import { toast } from "react-toastify";
@@ -286,11 +286,29 @@ const OwnerDashboard: FC = () => {
           </SidebarBody>
         </Sidebar>
         <div className="flex-1 rounded-t-2xl md:rounded-l-2xl md:rounded-r-none border p-4 md:p-6 bg-white max-h-screen overflow-y-auto">
-          <div className="flex justify-between items-center mb-3">
+          <div className="md:flex justify-between items-center mb-3">
             <Link href='/' className="font-normal flex space-x-2 items-center text-sm text-neutral-700 hover:text-neutral-900 hover:underline py-1 relative z-20">
               <FaArrowLeftLong className="me-2" />
               Back to Home
             </Link>
+
+            {/* <div className="flex gap-2">
+              <Link
+                href='#'
+                className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm py-2 px-4 rounded-lg"
+              // onClick={() => setView()}
+              >
+                Add New Truck
+              </Link>
+
+              <Link
+                href='#'
+                className="bg-indigo-500 hover:bg-indigo-600 text-white text-sm py-2 px-4 rounded-lg"
+              // onClick={() => setView()}
+              >
+                Add New Driver
+              </Link>
+            </div> */}
           </div>
           {renderView()}
         </div>

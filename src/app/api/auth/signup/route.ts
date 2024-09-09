@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const verifyOtp = generateOtp();
-    const otpExpiry = new Date(Date.now() + 60 * 60 * 1000); // OTP valid for 1 hour
+    const otpExpiry = new Date(Date.now() + 60 * 60 * 1000);
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {

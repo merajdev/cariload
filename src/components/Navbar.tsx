@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
             {/* Main Navbar */}
             <div className="fixed z-30 w-full top-0">
                 
-                <div className="mx-auto py-1 md:py-2 px-4 bg-white border text-indigo-600 flex items-center justify-between">
+                <div className="mx-auto rounded-b-xl shadow-sm py-2 px-4 bg-white border text-indigo-600 flex items-center justify-between">
                     <Link href={'/'} className="flex items-center text-xl font-bold text-indigo-600">
                         <Logo />
                         Cari Load
