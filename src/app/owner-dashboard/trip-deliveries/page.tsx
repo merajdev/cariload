@@ -28,7 +28,6 @@ export default function TripDelivery() {
     <div className="min-h-screen">
       <h1 className="text-2xl font-semibold mb-8 text-gray-800">Trips & Deliveries</h1>
 
-      {/* Tabs Navigation */}
       <div className="flex space-x-3 mb-6">
         <button
           className={`px-4 py-2 rounded-lg focus:outline-none ${
@@ -72,7 +71,6 @@ export default function TripDelivery() {
         </button>
       </div>
 
-      {/* Content for each tab */}
       <div className="">
         {activeTab === 'ongoing' && (
           <div>
