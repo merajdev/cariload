@@ -9,12 +9,17 @@ const TruckSchema = new Schema({
     truckId: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
+    },
+    driverId:{
+        type: String,
+        required: true,
+        // unique: true,
     },
     license: {
         type: String,
         required: true,
-        unique: true,
+        // unique: true,
     },
     model: {
         type: String,
@@ -39,11 +44,11 @@ const TruckSchema = new Schema({
     maintenanceSchedule: {
         lastMaintenance: {
             type: Date,
-            required: true,
+            // required: true,
         },
         nextMaintenance: {
             type: Date,
-            required: true,
+            // required: true,
         },
         recentRepairs: {
             type: String,

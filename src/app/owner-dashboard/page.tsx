@@ -15,9 +15,8 @@ import { Setting } from "./settings/Setting";
 import useAuth from '@/hooks/useAuth';
 import Spinner from '@/components/Spinner';
 import { FaBell, FaTruck, FaUserCircle, FaUserFriends } from "react-icons/fa";
-import { TbGpsFilled } from "react-icons/tb";
-import { MdContactSupport, MdDashboard, MdPayments } from "react-icons/md";
-import { IoIosNotifications, IoMdAnalytics, IoMdSettings } from "react-icons/io";
+import {  MdDashboard, MdPayments } from "react-icons/md";
+import {  IoMdAnalytics, IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";
 import { getUserDetails } from "@/utils/getUserDetails";
 import { toast } from "react-toastify";
@@ -257,7 +256,7 @@ const OwnerDashboard: FC = () => {
           "h-screen"
         )}
       >
-        <Sidebar open={open} setOpen={setOpen} animate={true}>
+        <Sidebar open={open} setOpen={setOpen} animate={false}>
           <SidebarBody className="justify-between gap-10">
             <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
               {/* <Logo /> */}

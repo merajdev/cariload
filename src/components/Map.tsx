@@ -1,3 +1,5 @@
+// components/Map.tsx
+
 import React from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 
@@ -13,9 +15,10 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({ latitude, longitude }) => {
   const position = { lat: latitude, lng: longitude };
+  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string;
 
   return (
-    <LoadScript googleMapsApiKey="AIzaSyAB6p0Eaxwqj2wK2tPjeQwz02uy38IF4PM" >
+    <LoadScript googleMapsApiKey={googleMapsApiKey}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={position}
