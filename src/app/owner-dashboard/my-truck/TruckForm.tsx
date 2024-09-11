@@ -1,3 +1,4 @@
+import Spinner from "@/components/Spinner";
 import axios from "axios";
 import { useState } from "react";
 import { toast } from "react-toastify";
@@ -19,9 +20,9 @@ interface Truck {
     longitude?: number;
 }
 
-export const TruckForm = ({ truck, onSubmit, onCancel }: {
+export const TruckForm = ({ truck, onCancel }: {
     truck: Truck | null;
-    onSubmit: (truck: Truck) => void;
+    // onSubmit: (truck: Truck) => void;
     onCancel: () => void;
 }) => {
     const [truckId, setTruckId] = useState(truck?.truckId || '');
@@ -33,11 +34,13 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
     const [latitude, setLatitude] = useState(truck?.latitude || 0);
     const [longitude, setLongitude] = useState(truck?.longitude || 0);
     const [error, setError] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
 
     const handleSubmit = async () => {
 
         try {
+            setLoading(true);
             if (!truckId || !license || !model || capacity <= 0) {
                 setError("Please fill all required fields.");
                 return;
@@ -52,7 +55,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
 
             const parsedAuthData = JSON.parse(authData);
 
-            const {token} = parsedAuthData;
+            const { token } = parsedAuthData;
 
             if (!token) {
                 setError("An error occurred. Please try again later.");
@@ -69,7 +72,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                 latitude,
                 longitude,
             };
-            
+
             const response = await axios.post('/api/truck', truckData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -77,8 +80,8 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                 }
             });
 
-            if(response.status === 201) {
-                toast.success("Truck added successfully.", {position: 'top-center'});
+            if (response.status === 201) {
+                toast.success("Truck added successfully.", { position: 'top-center' });
                 setTruckId('');
                 setDriverId('');
                 setLicense('');
@@ -87,32 +90,17 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                 setStatus('available');
                 setLatitude(0);
                 setLongitude(0);
-            }else{
+            } else {
                 setError("An error occurred. Please try again later.");
             }
 
         } catch (error) {
-            toast.error("An error occurred. Please try again later.", {position: 'top-center'});
+            toast.error("An error occurred. Please try again later.", { position: 'top-center' });
             setError("An error occurred. Please try again later.");
             console.error(error);
         }
 
-
-        // if (!truckId || !license || !model || capacity <= 0) return;  // Add truckId validation
-
-        onSubmit({
-            id: truck?.id || 0,
-            truckId,
-            driverId,
-            license,
-            model,
-            capacity,
-            status,
-            maintenance: truck?.maintenance || undefined,
-            latitude,
-            longitude,
-        });
-
+        setLoading(false);
         onCancel();
     };
 
@@ -125,6 +113,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         <label className="block text-gray-700 mb-2">Truck ID</label>  {/* Add Truck ID input */}
                         <input
                             type="text"
+                            required
                             value={truckId}
                             onChange={(e) => setTruckId(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded"
@@ -134,6 +123,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         <label className="block text-gray-700 mb-2">Driver ID</label>  {/* Add Truck ID input */}
                         <input
                             type="text"
+                            required
                             value={driverId}
                             onChange={(e) => setDriverId(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded"
@@ -143,6 +133,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         <label className="block text-gray-700 mb-2">License</label>
                         <input
                             type="text"
+                            required
                             value={license}
                             onChange={(e) => setLicense(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded"
@@ -152,6 +143,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         <label className="block text-gray-700 mb-2">Model</label>
                         <input
                             type="text"
+                            required
                             value={model}
                             onChange={(e) => setModel(e.target.value)}
                             className="w-full p-2 border border-gray-300 rounded"
@@ -161,6 +153,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         <label className="block text-gray-700 mb-2">Capacity (tons)</label>
                         <input
                             type="number"
+                            required
                             value={capacity}
                             onChange={(e) => setCapacity(Number(e.target.value))}
                             className="w-full p-2 border border-gray-300 rounded"
@@ -182,6 +175,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         <label className="block text-gray-700 mb-2">Latitude</label>
                         <input
                             type="number"
+                            required
                             value={latitude}
                             onChange={(e) => setLatitude(Number(e.target.value))}
                             className="w-full p-2 border border-gray-300 rounded"
@@ -191,6 +185,7 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         <label className="block text-gray-700 mb-2">Longitude</label>
                         <input
                             type="number"
+                            required
                             value={longitude}
                             onChange={(e) => setLongitude(Number(e.target.value))}
                             className="w-full p-2 border border-gray-300 rounded"
@@ -205,10 +200,11 @@ export const TruckForm = ({ truck, onSubmit, onCancel }: {
                         Cancel
                     </button>
                     <button
+                        type="submit"
                         onClick={handleSubmit}
-                        className="bg-blue-500 text-white py-2 px-4 rounded"
+                        className="bg-blue-500 w-24 text-white py-2 px-4 rounded text-center"
                     >
-                        Save
+                        {loading ? <Spinner size="w-6 h-6" color="#ffffff" /> : 'Submit'}
                     </button>
                 </div>
             </div>

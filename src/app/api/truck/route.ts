@@ -28,13 +28,13 @@ export async function GET(req: NextRequest) {
         }
 
         const trucks = await Truck.find({ owner: user._id });
+        
         return NextResponse.json({ success: true, trucks }, { status: 200 });
     } catch (err) {
         console.error(err);
         return new Response(JSON.stringify({ success: false, error: err }), { status: 500 });
     }
 }
-
 
 export async function POST(req: Request) {
 

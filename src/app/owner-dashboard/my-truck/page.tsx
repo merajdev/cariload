@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { MaintenanceForm } from './MaintenanceForm';
 import { TruckForm } from './TruckForm';
 import Spinner from '@/components/Spinner';
+import axios from 'axios';
 
 // Lazy load the Map component to avoid server-side rendering issues
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
@@ -43,8 +44,6 @@ const TruckManagement = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch trucks from the API
-    // setTrucks(data);
     async function fetchTrucks() {
       try {
         const authData = localStorage.getItem('authData');
@@ -91,7 +90,7 @@ const TruckManagement = () => {
           latitude: truck.latitude,
           longitude: truck.longitude,
         }));
-
+        console.log(transformedTrucks[0].truckId);
         setTrucks(transformedTrucks);
 
       } catch (error) {
@@ -107,14 +106,40 @@ const TruckManagement = () => {
 
   }, []);
 
-  const handleAddOrEditTruck = (truck: Truck) => {
-    if (selectedTruck) {
-      setTrucks(trucks.map(t => (t.id === selectedTruck.id ? truck : t)));
-    } else {
-      setTrucks([...trucks, { ...truck, id: trucks.length + 1 }]);
+  const handleRemoveTruck = async (truckId: number) => {
+    try {
+      const authData = localStorage.getItem('authData');
+
+      if (!authData) {
+        setError("An error occurred. Please try again later");
+        return;
+      }
+
+      const parsedAuthData = JSON.parse(authData);
+      const { token } = parsedAuthData;
+
+      if (!token) {
+        setError("An error occurred. Please try again later");
+        return;
+      }
+
+      const response = await axios.delete(`/api/truck/${truckId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (!response.data.success) {
+        throw new Error('Failed to remove truck');
+      }
+
+      setTrucks(trucks.filter(truck => truck.id !== truckId));
+      setShowRemoveModal(false);
+
+    } catch (error) {
+      console.error(error);
+      setError("An error occurred. Please try again later");
     }
-    setShowForm(false);
-    setSelectedTruck(null);
   };
 
   const handleMaintenanceSchedule = (maintenance: {
@@ -222,7 +247,7 @@ const TruckManagement = () => {
         {showForm && (
           <TruckForm
             truck={selectedTruck}
-            onSubmit={handleAddOrEditTruck}
+            // onSubmit={handleAddTruck}
             onCancel={() => setShowForm(false)}
           />
         )}
@@ -268,7 +293,7 @@ const TruckManagement = () => {
                   </button>
                   <button
                     onClick={() => {
-                      setTrucks(trucks.filter(truck => truck.id !== selectedTruck?.id));
+                      handleRemoveTruck(selectedTruck?.id || 0);
                       setShowRemoveModal(false);
                     }}
                     className="bg-red-500 text-white py-2 px-4 rounded"
