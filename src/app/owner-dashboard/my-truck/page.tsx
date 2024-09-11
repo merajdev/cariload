@@ -142,6 +142,11 @@ const TruckManagement = () => {
     }
   };
 
+  const handleEditTruck = (truck: Truck) => {
+    setSelectedTruck(truck);
+    setShowForm(true);
+  };
+
   const handleMaintenanceSchedule = (maintenance: {
     lastMaintenance: Date;
     nextMaintenance: Date;
@@ -177,7 +182,7 @@ const TruckManagement = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => {
-                setSelectedTruck(row);
+                handleEditTruck(row);
                 setShowForm(true);
               }}
               className="text-white p-2 rounded bg-blue-500 hover:bg-blue-600"
