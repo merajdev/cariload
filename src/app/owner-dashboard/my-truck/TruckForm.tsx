@@ -1,213 +1,184 @@
-import Spinner from "@/components/Spinner";
-import axios from "axios";
-import { useState } from "react";
-import { toast } from "react-toastify";
+'use client';
+
+import { useEffect, useState } from 'react';
+import { FaCheck, FaTimes } from 'react-icons/fa';
+import axios from 'axios';
+import Spinner from '@/components/Spinner';
 
 interface Truck {
-    id: number;
-    truckId: string;
-    driverId: string;
-    license: string;
-    model: string;
-    capacity: number;
-    status: 'available' | 'on-trip' | 'under-maintenance';
-    maintenance?: {
-        lastMaintenance: Date;
-        nextMaintenance: Date;
-        recentRepairs?: string;
-    };
-    latitude?: number;
-    longitude?: number;
+    id?: number;
+    driverId?: string;
+    truckId?: string;
+    license?: string;
+    model?: string;
+    capacity?: number;
+    status?: 'available' | 'on-trip' | 'under-maintenance';
 }
 
-export const TruckForm = ({ truck, onCancel }: {
-    truck: Truck | null;
-    // onSubmit: (truck: Truck) => void;
+interface TruckFormProps {
+    truck?: Truck | null;
     onCancel: () => void;
-}) => {
-    const [truckId, setTruckId] = useState(truck?.truckId || '');
-    const [driverId, setDriverId] = useState(truck?.driverId || '');
-    const [license, setLicense] = useState(truck?.license || '');
-    const [model, setModel] = useState(truck?.model || '');
-    const [capacity, setCapacity] = useState(truck?.capacity || 0);
-    const [status, setStatus] = useState(truck?.status || 'available');
-    const [latitude, setLatitude] = useState(truck?.latitude || 0);
-    const [longitude, setLongitude] = useState(truck?.longitude || 0);
-    const [error, setError] = useState<string>('');
-    const [loading, setLoading] = useState<boolean>(false);
+}
 
+export const TruckForm = ({ truck, onCancel }: TruckFormProps) => {
+    const [formData, setFormData] = useState<Truck>({
+        driverId: '',
+        truckId: '',
+        license: '',
+        model: '',
+        capacity: 0,
+        status: 'available',
+        ...truck,
+    });
 
-    const handleSubmit = async () => {
+    const [loading, setLoading] = useState(false);
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+    
         try {
-            setLoading(true);
-            if (!truckId || !license || !model || capacity <= 0) {
-                setError("Please fill all required fields.");
-                return;
-            }
-
             const authData = localStorage.getItem('authData');
-
-            if (!authData) {
-                setError("An error occurred. Please try again later.");
-                return;
-            }
-
-            const parsedAuthData = JSON.parse(authData);
-
-            const { token } = parsedAuthData;
-
-            if (!token) {
-                setError("An error occurred. Please try again later.");
-                return;
-            }
-
-            const truckData = {
-                truckId,
-                driverId,
-                license,
-                model,
-                capacity,
-                status,
-                latitude,
-                longitude,
-            };
-
-            const response = await axios.post('/api/truck', truckData, {
+            if (!authData) throw new Error("Authentication data not found");
+    
+            const { token } = JSON.parse(authData);
+            if (!token) throw new Error("Token not found");
+    
+            const truckId = formData.id;
+    
+            // Use appropriate API endpoints for creating/updating trucks
+            const endpoint = truckId ? `/api/truck/${truckId}` : '/api/truck';
+            const method = truckId ? 'put' : 'post';
+    
+            const response = await axios[method](endpoint, formData, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
-                }
+                },
             });
-
-            if (response.status === 201) {
-                toast.success("Truck added successfully.", { position: 'top-center' });
-                setTruckId('');
-                setDriverId('');
-                setLicense('');
-                setModel('');
-                setCapacity(0);
-                setStatus('available');
-                setLatitude(0);
-                setLongitude(0);
+    
+            if (response.data.success) {
+                // Handle success, possibly call a parent method to refresh trucks list
+                onCancel(); // Close the form on success
             } else {
-                setError("An error occurred. Please try again later.");
+                throw new Error('Failed to save truck');
             }
-
+    
         } catch (error) {
-            toast.error("An error occurred. Please try again later.", { position: 'top-center' });
-            setError("An error occurred. Please try again later.");
             console.error(error);
+            // Handle error (you can also set an error state to display feedback)
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
-        onCancel();
     };
+    
 
     return (
         <div className="fixed z-20 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white m-4 max-h-[90vh] overflow-y-scroll md:overflow-hidden p-3 md:p-6 rounded shadow-lg w-full md:w-6/12">
-                <h2 className="text-xl font-semibold mb-4">{truck ? 'Edit Truck' : 'Add New Truck'}</h2>
-                <form className="grid sm:grid-cols-2 gap-3">
+            <div className="bg-white p-3 md:p-6 rounded shadow-lg w-full mx-2 md:w-1/2">
+                <h2 className="text-xl font-semibold mb-4">{formData.id ? 'Edit Truck' : 'Add Truck'}</h2>
+                <form onSubmit={handleSubmit}>
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Truck ID</label>  {/* Add Truck ID input */}
+                        <label className="block text-gray-700">Driver Id:</label>
                         <input
                             type="text"
+                            name="driverId"
+                            value={formData.driverId || ''}
+                            onChange={handleChange}
+                            className="border rounded w-full px-3 py-2 mt-1"
                             required
-                            value={truckId}
-                            onChange={(e) => setTruckId(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Driver ID</label>  {/* Add Truck ID input */}
+                        <label className="block text-gray-700">Truck Id:</label>
                         <input
                             type="text"
+                            name="truckId"
+                            value={formData.truckId || ''}
+                            onChange={handleChange}
+                            className="border rounded w-full px-3 py-2 mt-1"
                             required
-                            value={driverId}
-                            onChange={(e) => setDriverId(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">License</label>
+                        <label className="block text-gray-700">Registration Number:</label>
                         <input
                             type="text"
+                            name="license"
+                            value={formData.license || ''}
+                            onChange={handleChange}
+                            className="border rounded w-full px-3 py-2 mt-1"
                             required
-                            value={license}
-                            onChange={(e) => setLicense(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Model</label>
+                        <label className="block text-gray-700">Model:</label>
                         <input
                             type="text"
+                            name="model"
+                            value={formData.model || ''}
+                            onChange={handleChange}
+                            className="border rounded w-full px-3 py-2 mt-1"
                             required
-                            value={model}
-                            onChange={(e) => setModel(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Capacity (tons)</label>
+                        <label className="block text-gray-700">Capacity:</label>
                         <input
                             type="number"
+                            name="capacity"
+                            value={formData.capacity || 0}
+                            onChange={handleChange}
+                            className="border rounded w-full px-3 py-2 mt-1"
                             required
-                            value={capacity}
-                            onChange={(e) => setCapacity(Number(e.target.value))}
-                            className="w-full p-2 border border-gray-300 rounded"
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Status</label>
+                        <label className="block text-gray-700">Status:</label>
                         <select
-                            value={status}
-                            onChange={(e) => setStatus(e.target.value as 'available' | 'on-trip' | 'under-maintenance')}
-                            className="w-full p-2 border border-gray-300 rounded"
+                            name="status"
+                            value={formData.status || 'available'}
+                            onChange={handleChange}
+                            className="border rounded w-full px-3 py-2 mt-1"
+                            required
                         >
                             <option value="available">Available</option>
                             <option value="on-trip">On Trip</option>
                             <option value="under-maintenance">Under Maintenance</option>
                         </select>
                     </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Latitude</label>
-                        <input
-                            type="number"
-                            required
-                            value={latitude}
-                            onChange={(e) => setLatitude(Number(e.target.value))}
-                            className="w-full p-2 border border-gray-300 rounded"
-                        />
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700 mb-2">Longitude</label>
-                        <input
-                            type="number"
-                            required
-                            value={longitude}
-                            onChange={(e) => setLongitude(Number(e.target.value))}
-                            className="w-full p-2 border border-gray-300 rounded"
-                        />
+                    <div className="flex justify-end gap-3">
+                        <button
+                            type="button"
+                            onClick={onCancel}
+                            className="bg-red-500 text-white py-2 px-4 rounded flex items-center gap-2"
+                        >
+                            <FaTimes /> Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            className="bg-blue-500 text-white py-2 px-4 rounded w-24 flex items-center justify-center gap-2"
+                        >
+                            {
+                                loading
+                                    ? <Spinner size="w-6 h-6" color="#ffffff" />
+                                    : 
+                                    <>
+                                        <FaCheck /> Save
+                                    </>
+
+                            }
+                        </button>
                     </div>
                 </form>
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={onCancel}
-                        className="bg-red-500 text-white py-2 px-4 rounded"
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        onClick={handleSubmit}
-                        className="bg-blue-500 w-24 text-white py-2 px-4 rounded text-center"
-                    >
-                        {loading ? <Spinner size="w-6 h-6" color="#ffffff" /> : 'Submit'}
-                    </button>
-                </div>
             </div>
         </div>
     );
 };
+
+export default TruckForm;

@@ -59,6 +59,7 @@ export default function SignUp() {
   };
 
   const handleVerifyOtp = async (e: React.FormEvent) => {
+    setLoading(true)
     e.preventDefault();
     const res = await fetch('/api/auth/verify-otp', {
       method: 'POST',
@@ -72,6 +73,7 @@ export default function SignUp() {
     } else {
       setError('Invalid OTP');
     }
+    setLoading(false);
   };
 
   return (
@@ -100,12 +102,6 @@ export default function SignUp() {
                 <Link href={'/'} className='text-center text-xl text-indigo-500 font-bold'>Logo</Link>
               </div>
               <div className="mt-6 flex flex-col items-center">
-                <p className="text-sm xl:text-base text-gray-600 mt-2">
-                  Already have an account?
-                  <Link href={'/login'} className="text-indigo-500 border-b border-indigo-500 border-dotted">
-                    Login
-                  </Link>
-                </p>
                 <div className="w-full flex-1 mt-4">
                   <form onSubmit={otpSent ? handleVerifyOtp : handleSignUp}>
                     <h2 className="text-2xl text-center font-bold mb-6">{otpSent ? 'Verify OTP' : 'Sign Up'}</h2>
@@ -176,8 +172,17 @@ export default function SignUp() {
                       type="submit"
                       className="mt-5 tracking-wide font-semibold bg-indigo-500 text-gray-100 w-full py-4 rounded-lg hover:bg-indigo-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                     >
-                      {otpSent ? 'Verify OTP' : 'Sign Up'}
+                      {
+                        loading ? <Spinner size="w-6 h-6" color="#ffffff" /> : otpSent ? 'Verify OTP' : 'Sign Up'
+                      }
                     </button>
+
+                    <p className="text-sm text-center xl:text-base text-gray-600 mt-4">
+                      Already have an account?
+                      <Link href={'/login'} className="text-indigo-500 border-b border-indigo-500 border-dotted">
+                        Login
+                      </Link>
+                    </p>
                   </form>
 
                   <p className="mt-6 text-xs text-gray-600 text-center">

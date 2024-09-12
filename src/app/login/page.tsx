@@ -95,12 +95,7 @@ export default function Login() {
               </div>
               <div className="mt-12 flex flex-col items-center">
                 <h1 className="text-2xl xl:text-3xl font-extrabold">Login</h1>
-                <p className="text-sm xl:text-base text-gray-600 mt-2">
-                  Don’t have an account?
-                  <button onClick={() => router.push('/signup')} className="text-indigo-500 border-b border-indigo-500 border-dotted ml-1">
-                    Sign up
-                  </button>
-                </p>
+                
                 {error && <p className="text-red-500 mt-4">{error}</p>}
                 <form onSubmit={handleSubmit} className="w-full flex-1 mt-8">
                   <input
@@ -129,6 +124,12 @@ export default function Login() {
                     {loading ? <Spinner size="w-6 h-6" color="#ffffff" /> : 'Login'}
                   </button>
                 </form>
+                <p className="text-sm xl:text-base text-gray-600 mt-4">
+                  Don’t have an account?
+                  <button onClick={() => router.push('/signup')} className="text-indigo-500 border-b border-indigo-500 border-dotted ml-1">
+                    Sign up
+                  </button>
+                </p>
               </div>
             </div>
           </div>

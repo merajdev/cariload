@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-export const MaintenanceForm = ({ truckId, maintenance, onSubmit, onCancel }: {
-    truckId: number;
+export const MaintenanceForm = ({  maintenance, onSubmit, onCancel }: {
     maintenance: {
         lastMaintenance: Date;
         nextMaintenance: Date;
@@ -33,9 +32,6 @@ export const MaintenanceForm = ({ truckId, maintenance, onSubmit, onCancel }: {
             <div className="bg-white mx-4 p-3 md:p-6 rounded shadow-lg w-96">
                 <h2 className="text-xl font-semibold mb-4">Maintenance Schedule</h2>
                 <form>
-                    <span className="mb-4">
-                        Truck ID: <strong>{truckId}</strong>
-                    </span>
                     <div className="mb-4">
                         <label className="block text-gray-700 mb-2">Last Maintenance</label>
                         <input

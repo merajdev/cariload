@@ -106,6 +106,9 @@ const TruckManagement = () => {
 
   }, []);
 
+
+
+
   const handleRemoveTruck = async (truckId: number) => {
     try {
       const authData = localStorage.getItem('authData');
@@ -189,7 +192,8 @@ const TruckManagement = () => {
             >
               <FaEdit />
             </button>
-            <button
+
+            {/* <button
               onClick={() => {
                 setMaintenanceTruckId(row.id);
                 setShowMaintenanceForm(true);
@@ -197,7 +201,8 @@ const TruckManagement = () => {
               className="text-white p-2 rounded bg-yellow-500 hover:bg-yellow-600"
             >
               <FaTools />
-            </button>
+            </button> */}
+
             <button
               onClick={() => handleMapOpen(row.latitude || 0, row.longitude || 0)}
               className="text-white p-2 rounded bg-green-500 hover:bg-green-600"
@@ -235,11 +240,15 @@ const TruckManagement = () => {
         <div className="md:flex justify-between items-center">
           <h2 className="text-xl md:text-2xl font-semibold mb-4">Truck Management</h2>
           <button
-            onClick={() => setShowForm(true)}
+            onClick={() => {
+              setSelectedTruck(null);  // Reset selectedTruck to null
+              setShowForm(true);
+            }}
             className="flex items-center gap-2 bg-indigo-500 hover:bg-indigo-600 text-white py-2 px-4 rounded mb-4"
           >
             <FaPlusCircle /> Add Truck
           </button>
+
         </div>
 
         <DataTable
@@ -259,7 +268,6 @@ const TruckManagement = () => {
 
         {showMaintenanceForm && maintenanceTruckId !== null && (
           <MaintenanceForm
-            truckId={maintenanceTruckId}
             maintenance={
               trucks.find(t => t.id === maintenanceTruckId)?.maintenance || null
             }
@@ -330,5 +338,7 @@ const TruckManagement = () => {
     </>
   );
 };
+
+
 
 export default TruckManagement;

@@ -44,3 +44,48 @@ export async function DELETE(req: NextRequest, { params }: { params: { truckId: 
         return NextResponse.json({ success: false, error: err }, { status: 500 });
     }
 }
+
+
+export async function PUT(req: NextRequest, { params }: { params: { truckId: string } }) {
+    try {
+        await dbConnect();
+
+        const authHeader = req.headers.get('Authorization') || '';
+        const token = authHeader.split(' ')[1];
+
+        if (!token) {
+            return NextResponse.json({ success: false, error: 'No token provided' }, { status: 401 });
+        }
+
+        const userResponse = await getUserDetails(token);
+
+        if (!userResponse.success) {
+            return NextResponse.json({ success: false, error: userResponse.error }, { status: 401 });
+        }
+
+        const user = userResponse.user;
+
+        if (user.role !== 'owner') {
+            return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const { truckId } = params;
+
+        if (!truckId) {
+            return NextResponse.json({ success: false, error: 'Truck ID is required' }, { status: 400 });
+        }
+
+        const truckData = await req.json();
+
+        const truck = await Truck.findOneAndUpdate({ owner: user._id, _id: truckId }, truckData, { new: true });
+
+        if (!truck) {
+            return NextResponse.json({ success: false, error: 'Truck not found' }, { status: 404 });
+        }
+
+        return NextResponse.json({ success: true, truck }, { status: 200 });
+    } catch (err) {
+        console.error(err);
+        return NextResponse.json({ success: false, error: err }, { status: 500 });
+    }
+}
