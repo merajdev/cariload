@@ -8,6 +8,7 @@ import { MaintenanceForm } from './MaintenanceForm';
 import { TruckForm } from './TruckForm';
 import Spinner from '@/components/Spinner';
 import axios from 'axios';
+import { FaX } from 'react-icons/fa6';
 
 // Lazy load the Map component to avoid server-side rendering issues
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
@@ -172,12 +173,49 @@ const TruckManagement = () => {
 
 
   const columns = [
-    { name: 'Truck Id', selector: (row: Truck) => row.truckId, sortable: true },
-    { name: 'Driver Id', selector: (row: Truck) => row.driverId, sortable: true },
-    { name: 'Registration Number', selector: (row: Truck) => row.license, sortable: true },
-    { name: 'Model', selector: (row: Truck) => row.model, sortable: true },
-    { name: 'Capacity (tons)', selector: (row: Truck) => row.capacity, sortable: true },
-    { name: 'Status', selector: (row: Truck) => row.status, sortable: true },
+    {
+      name: 'Truck Id',
+      selector: (row: Truck) => row.truckId,
+      sortable: true
+    },
+    {
+      name: 'Driver Id',
+      selector: (row: Truck) => row.driverId,
+      sortable: true
+    },
+    {
+      name: 'Registration Number',
+      selector: (row: Truck) => row.license,
+      sortable: true
+    },
+    {
+      name: 'Model',
+      selector: (row: Truck) => row.model,
+      sortable: true
+    },
+    {
+      name: 'Capacity (tons)',
+      selector: (row: Truck) => row.capacity,
+      sortable: true
+    },
+    {
+      name: 'Status',
+      cell: (row: Truck) => (
+        <span
+          className={`px-2 py-0.5 rounded-full border ${
+            row.status === 'available'
+              ? 'border-green-500 text-green-500'
+              : row.status === 'on-trip'
+                ? 'border-blue-500 text-blue-500'
+                : 'border-red-500 text-red-500'
+          }`}
+        >
+          {row.status}
+        </span>
+      ),
+      selector: (row: Truck) => row.status,
+      sortable: true
+    },
     {
       name: 'Actions',
       cell: (row: Truck) => (
@@ -188,7 +226,7 @@ const TruckManagement = () => {
                 handleEditTruck(row);
                 setShowForm(true);
               }}
-              className="text-white p-2 rounded bg-blue-500 hover:bg-blue-600"
+              className="text-blue-500 p-2 rounded bg-blue-100 hover:bg-blue-200"
             >
               <FaEdit />
             </button>
@@ -205,7 +243,7 @@ const TruckManagement = () => {
 
             <button
               onClick={() => handleMapOpen(row.latitude || 0, row.longitude || 0)}
-              className="text-white p-2 rounded bg-green-500 hover:bg-green-600"
+              className="text-green-500 p-2 rounded bg-green-100 hover:bg-green-200"
             >
               <FaMapMarkerAlt />
             </button>
@@ -215,7 +253,7 @@ const TruckManagement = () => {
                 setSelectedTruck(row);
                 setShowRemoveModal(true);
               }}
-              className="text-white p-2 rounded bg-red-500 hover:bg-red-600"
+              className="text-red-500 p-2 rounded bg-red-100 hover:bg-red-200"
             >
               <FaTrash />
             </button>
@@ -295,21 +333,23 @@ const TruckManagement = () => {
           showRemoveModal && (
             <div className="fixed z-20 inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
               <div className="bg-white p-3 md:p-6 rounded shadow-lg w-96">
-                <h2 className="text-xl font-semibold mb-4">Remove Truck</h2>
-                <p>Are you sure you want to remove this truck?</p>
-                <div className="flex items-center gap-3 mt-4">
+                <div className="flex justify-between mb-4">
+                  <h2 className="text-xl font-semibold">Remove Truck</h2>
                   <button
                     onClick={() => setShowRemoveModal(false)}
-                    className="bg-gray-500 text-white py-2 px-4 rounded"
+                    className="bg-neutral-100 text-sm text-black hover:bg-neutral-200 p-2 rounded"
                   >
-                    Cancel
+                    <FaX />
                   </button>
+                </div>
+                <p>Are you sure you want to remove this truck?</p>
+                <div className="flex justify-end items-center gap-3 mt-4">
                   <button
                     onClick={() => {
                       handleRemoveTruck(selectedTruck?.id || 0);
                       setShowRemoveModal(false);
                     }}
-                    className="bg-red-500 text-white py-2 px-4 rounded"
+                    className="bg-red-100 text-red-500 hover:bg-red-200 py-2 px-4 rounded"
                   >
                     Remove
                   </button>

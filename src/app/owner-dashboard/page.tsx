@@ -24,7 +24,7 @@ import TruckManagement from "./my-truck/page";
 import TripDelivery from "./trip-deliveries/page";
 import GoodRecord from "./good-record/page";
 import MaintenanceAlert from "./maintenance-alert/page";
-import DriverManagement from "./drivers/page";
+import {DriverManagement} from "./drivers/page";
 import PaymentEarning from "./payment-earning/page";
 import ReportAnalytic from "./report-analytics/page";
 import { BsFillFileEarmarkBarGraphFill } from "react-icons/bs";
