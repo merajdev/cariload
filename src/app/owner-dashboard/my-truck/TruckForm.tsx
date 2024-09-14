@@ -62,7 +62,7 @@ export const TruckForm = ({ truck, onCancel }: TruckFormProps) => {
                 },
             });
     
-            if (response.data.success) {
+            if (response.data.success) {                
                 // Handle success, possibly call a parent method to refresh trucks list
                 onCancel(); // Close the form on success
             } else {

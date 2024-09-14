@@ -1,5 +1,6 @@
 import dbConnect from "@/lib/mongodb";
 import Driver from "@/models/driver.model";
+import Truck from "@/models/truck.model";
 import { getUserDetails } from "@/utils/getUserDetails";
 import { NextRequest } from "next/server";
 
@@ -9,8 +10,6 @@ export async function POST(req: NextRequest) {
         await dbConnect();
 
         const driverData = await req.json();
-
-        // console.log(driverData);
 
         const authHeader = req.headers.get('Authorization') || '';
         const token = authHeader.split(' ')[1];
@@ -27,8 +26,6 @@ export async function POST(req: NextRequest) {
 
         const user = userResponse.user;
 
-        console.log(user);
-
         if (user.role !== 'owner') {
             return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401 });
         }
@@ -39,8 +36,22 @@ export async function POST(req: NextRequest) {
             return new Response(JSON.stringify({ success: false, error: 'Driver already exists' }), { status: 400 });
         }
 
+        const truckDetail = await Truck.findOne({ owner: user._id});
+
+        if (!truckDetail) {
+            return new Response(JSON.stringify({ success: false, error: 'Truck not found' }), { status: 404 });
+        }
+
+        const  owner = user._id;
+        const truckId = truckDetail._id;
+
+        if(!(truckId === driverData.assignedTruck)) {
+            return new Response(JSON.stringify({ success: false, error: 'Truck ID does not exist' }), { status: 404 });
+        }
+
         const driverDetail = {
-            owner: user._id, // explicitly include owner
+            owner, // explicitly include owner
+            truckId,
             driverId: driverData.driverId,
             name: driverData.name,
             contact: {
@@ -54,9 +65,7 @@ export async function POST(req: NextRequest) {
             tripHistory: [],
         };
 
-
         const driver = await Driver.create(driverDetail); // pass driverData explicitly
-        console.log('Driver created:', driver);
 
         return new Response(JSON.stringify({ success: true, driver }), { status: 200 });
 
@@ -87,7 +96,7 @@ export async function GET(req: NextRequest) {
         const user = userResponse.user;
 
         if (user.role !== 'owner') {
-            return new Response(JSON.stringify({ success: false, error: 'Unauthorized' }), { status: 401 });
+            return new Response(JSON.stringify({ success: false, error: 'Unauthorized User' }), { status: 401 });
         }
 
         const drivers = await Driver.find({ owner: user._id });

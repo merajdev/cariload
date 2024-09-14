@@ -24,10 +24,10 @@ import TruckManagement from "./my-truck/page";
 import TripDelivery from "./trip-deliveries/page";
 import GoodRecord from "./good-record/page";
 import MaintenanceAlert from "./maintenance-alert/page";
-import {DriverManagement} from "./drivers/page";
 import PaymentEarning from "./payment-earning/page";
 import ReportAnalytic from "./report-analytics/page";
 import { BsFillFileEarmarkBarGraphFill } from "react-icons/bs";
+import DriverManagement from "./drivers/page";
 
 type View =
   "dashboard" |
@@ -221,7 +221,7 @@ const OwnerDashboard: FC = () => {
   // Optionally show a loading state while checking
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-[92vh] flex items-center justify-center">
         <Spinner color="#3498db" />
         {/* Customize size and color */}
       </div>

@@ -30,7 +30,7 @@ const DriverSchema = new Schema({
     },
     address: {
       type: String,
-      required: true,
+      // required: true,
     },
   },
   status: {
@@ -44,8 +44,8 @@ const DriverSchema = new Schema({
   },
   ratings: {
     type: Number,
-    min: 1,
-    max: 5,
+    // min: 0,
+    // max: 5,
     default: 0,
   },
   tripHistory: [

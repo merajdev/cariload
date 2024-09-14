@@ -12,13 +12,13 @@ export const DriverForm: React.FC<DriverFormProps> = ({ driver, onSave, onClose 
   const [formData, setFormData] = useState(driver || {
     driverId: '',
     name: '',
+    assignedTruck: '',
     contact: {
       phone: '',
       email: '',
       address: '',
     },
     status: 'active',
-    assignedTruck: '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -49,7 +49,7 @@ export const DriverForm: React.FC<DriverFormProps> = ({ driver, onSave, onClose 
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+    <div className="fixed z-10 inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
       <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
         <h2 className="text-2xl font-bold mb-4">{driver ? 'Edit Driver' : 'Add Driver'}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -59,6 +59,17 @@ export const DriverForm: React.FC<DriverFormProps> = ({ driver, onSave, onClose 
               type="text"
               name="driverId"
               value={formData.driverId}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700">Assigned Truck(Truck ID)</label>
+            <input
+              type="text"
+              name="assignedTruck"
+              value={formData.assignedTruck}
               onChange={handleChange}
               required
               className="mt-1 p-2 border border-gray-300 rounded-md w-full"
@@ -118,7 +129,7 @@ export const DriverForm: React.FC<DriverFormProps> = ({ driver, onSave, onClose 
             <button type="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded">
               Cancel
             </button>
-            
+
             <button type="submit" className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded">
               Save
             </button>
