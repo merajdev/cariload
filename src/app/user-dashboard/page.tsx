@@ -256,7 +256,7 @@ const UserDashboard: FC = () => {
           "h-screen"
         )}
       >
-        <Sidebar open={open} setOpen={setOpen} animate={true}>
+        <Sidebar open={open} setOpen={setOpen} animate={false}>
           <SidebarBody className="justify-between gap-10">
             <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
               {/* <Logo /> */}
