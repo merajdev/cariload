@@ -12,12 +12,14 @@ import { usePathname } from 'next/navigation';
 import { logout } from "@/redux/slice/authSlice";
 import axios from 'axios';
 import { FiLogOut } from 'react-icons/fi';
-import { MdDashboard } from 'react-icons/md';
+import { MdDashboard, MdEmail } from 'react-icons/md';
 import { Logo } from './Logo';
 import useAuth from '@/hooks/useAuth';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Spinner from './Spinner';
+import { FaPhoneVolume } from 'react-icons/fa6';
+import { BsBuildingsFill } from 'react-icons/bs';
 
 const Navbar: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -118,8 +120,49 @@ const Navbar: React.FC = () => {
 
             {/* Main Navbar */}
             <div className="fixed z-30 w-full top-0">
-                
-                <div className="mx-auto rounded-b-xl shadow-sm py-2 px-4 bg-white border text-indigo-600 flex items-center justify-between">
+                <div className="bg-white shadow-lg">
+                    <div className="mx-auto md:w-10/12 shadow-sm pb-10 pt-2 px-4 flex items-center justify-between">
+                        <div className="flex gap-2">
+                            <div className="bg-indigo-500 flex items-center justify-center p-2">
+                                <FaPhoneVolume className="text-xl text-white" />
+                            </div>
+                            <p className='flex flex-col'>
+                                <span className="text-sm text-indigo-600">Call Us</span>
+                                <a href='tel:+911234567890' className="font-semibold text-neutral-700 text-sm">+91 1234567890</a>
+                            </p>
+                        </div>
+
+                        {/* Email */}
+
+                        <div className="flex gap-2">
+                            <div className="bg-indigo-500 flex items-center justify-center p-2">
+                                <MdEmail className="text-xl text-white" />
+                            </div>
+                            <p className='flex flex-col'>
+                                <span className="text-sm text-indigo-600">Email Us</span>
+                                <a href='mailto:email@gmail.com' className="font-semibold text-neutral-700 text-sm">
+                                    email@gmail.com
+                                </a>
+                            </p>
+                        </div>
+
+                        {/* RC Number */}
+
+                        <div className="flex gap-2">
+                            <div className="bg-indigo-500 flex items-cnter justify-center p-2">
+                                <BsBuildingsFill className="text-xl text-white" />
+                            </div>
+                            <p className='flex flex-col'>
+                                <span className="text-sm text-indigo-600">RC Number</span>
+                                <p className="font-semibold text-neutral-700 text-sm">
+                                    RC1234567890
+                                </p>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="mx-auto md:w-10/12 rounded-xl shadow-sm py-2 px-4 bg-white border text-indigo-600 flex items-center justify-between -mt-8">
                     <Link href={'/'} className="flex items-center text-xl font-bold text-indigo-600">
                         <Logo />
                         Cari Load

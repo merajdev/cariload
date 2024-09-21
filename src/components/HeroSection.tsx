@@ -22,7 +22,7 @@ export function HeroSection() {
 
 
         <>
-            <ImagesSlider className="min-h-screen" images={images}>
+            <ImagesSlider className="min-h-[95vh] mt-12" images={images}>
                 <motion.div
                     initial={{
                         opacity: 0,
