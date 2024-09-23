@@ -121,7 +121,7 @@ const Navbar: React.FC = () => {
             {/* Main Navbar */}
             <div className="fixed z-30 w-full top-0">
                 <div className="bg-white shadow-lg">
-                    <div className="mx-auto md:w-10/12 shadow-sm pb-10 pt-2 px-4 flex items-center justify-between">
+                    <div className="mx-auto md:w-10/12 shadow-sm pb-10 pt-2 px-4 hidden md:flex items-center justify-between">
                         <div className="flex gap-2">
                             <div className="bg-indigo-500 flex items-center justify-center p-2">
                                 <FaPhoneVolume className="text-xl text-white" />
@@ -162,7 +162,7 @@ const Navbar: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="mx-auto md:w-10/12 rounded-xl shadow-sm py-2 px-4 bg-white border text-indigo-600 flex items-center justify-between -mt-8">
+                <div className="mx-auto md:w-10/12 md:rounded-xl shadow-sm py-2 px-4 bg-white border text-indigo-600 flex items-center justify-between md:-mt-8">
                     <Link href={'/'} className="flex items-center text-xl font-bold text-indigo-600">
                         <Logo />
                         Cari Load

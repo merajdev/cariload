@@ -7,8 +7,11 @@ import image2 from "/public/images/image2.png";
 import { BsDashLg } from "react-icons/bs";
 import { FaGlobe } from "react-icons/fa";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function AboutSection() {
+
+    const pathname = usePathname();
 
     return (
         <>
@@ -26,37 +29,84 @@ export function AboutSection() {
                             Leading Global <span className="text-indigo-500">Logistic
                                 And Transport </span>Agency
                         </h1>
-                        <div className="block gap-4 mb-8">
+                        <div className="block gap-4">
                             <div className="flex gap-3 p-4 md:p-6 bg-white mb-3 border-2 border-indigo-100 rounded-xl">
-                                <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
+                                {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
                                     <FaGlobe className="text-2xl" />
-                                </div>
+                                </div> */}
                                 <div className="block">
-                                    <h3 className="text-lg text-neutral-800 font-semibold mb-1">
+                                    {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
                                         Sub Heading
-                                    </h3>
+                                    </h3> */}
                                     <p className="text-sm text-neutral-500">
-                                        We provide the best logistic service in the city, we also provide safe & secure delivery.
+                                        Cari Load is a one-stop solution for logistics, providing a dynamic environment where truck owners connect with load owners in real-time.
                                     </p>
                                 </div>
                             </div>
-                            <div className="flex gap-3 p-4 md:p-6 bg-white mb-3 border-2 border-indigo-100 rounded-xl">
-                                <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
+                            <div className="flex gap-3 p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
+                                {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
                                     <FaGlobe className="text-2xl" />
-                                </div>
+                                </div> */}
                                 <div className="block">
-                                    <h3 className="text-lg text-neutral-800 font-semibold mb-1">
+                                    {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
                                         Sub Heading
-                                    </h3>
+                                    </h3> */}
                                     <p className="text-sm text-neutral-500">
-                                        We provide the best logistic service in the city, we also provide safe & secure delivery.
+                                        Our platform streamlines the logistics process by addressing issues related to fraudulent orders, empty returns, payment delays, unfair pricing, and poor communication, ultimately increasing productivity for all users.
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        <Link href={'/about'} className="flex w-max items-center text-sm bg-indigo-500 text-white hover:bg-indigo-600 px-6 py-3 rounded">
-                            More About Us <FaArrowRightLong className="ms-2" />
-                        </Link>
+                        {
+                            pathname.includes('/about') ? (
+                                <div className="block">
+                                    <div className="flex p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
+                                        {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
+                                    <FaGlobe className="text-2xl" />
+                                </div> */}
+                                        <div className="block">
+                                            {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
+                                        Sub Heading
+                                    </h3> */}
+                                            <p className="text-sm text-neutral-500">
+                                                We operates an online logistics marketplace where anyone, anywhere, at any time can find and book reliable logistics services, accessing a network of trusted professionals.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
+                                        {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
+                                    <FaGlobe className="text-2xl" />
+                                </div> */}
+                                        <div className="block">
+                                            {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
+                                        Sub Heading
+                                    </h3> */}
+                                            <p className="text-sm text-neutral-500">
+                                                In addition to facilitating connections, we leverage the latest technologies, including GPS tracking, automatic documentation, and instant notifications.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="flex p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
+                                        {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
+                                    <FaGlobe className="text-2xl" />
+                                </div> */}
+                                        <div className="block">
+                                            {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
+                                        Sub Heading
+                                    </h3> */}
+                                            <p className="text-sm text-neutral-500">
+                                                As the first freight marketplace in Northern Nigeria, Cari Load has pioneered a new era in logistics, setting a benchmark for efficiency and reliability. With over 1,000+ registered companies (truck owners and load owners) from across Nigeria actively using our platform, we are revolutionizing the way goods are transported                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            ) : (
+                                <Link href="/about" className="mt-4 gap-2 flex items-center bg-indigo-500 text-white w-max px-4 py-2 rounded-sm text-sm hover:bg-indigo-600">
+                                    Learn More <FaArrowRightLong />
+                                </Link>
+
+                            )
+                        }
                     </div>
 
                 </div>
