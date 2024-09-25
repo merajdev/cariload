@@ -6,8 +6,8 @@ import { FC } from 'react';
 import { FaSpinner } from 'react-icons/fa';
 
 interface SpinnerProps {
-  size?: string; // Tailwind class size
-  color?: string; // Optional color prop
+  size?: string;
+  color?: string;
 }
 
 const Spinner: FC<SpinnerProps> = ({ size = 'w-12 h-12', color = '#000' }) => {

@@ -31,26 +31,18 @@ export function AboutSection() {
                         </h1>
                         <div className="block gap-4">
                             <div className="flex gap-3 p-4 md:p-6 bg-white mb-3 border-2 border-indigo-100 rounded-xl">
-                                {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
-                                    <FaGlobe className="text-2xl" />
-                                </div> */}
+
                                 <div className="block">
-                                    {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
-                                        Sub Heading
-                                    </h3> */}
+
                                     <p className="text-sm text-neutral-500">
                                         Cari Load is a one-stop solution for logistics, providing a dynamic environment where truck owners connect with load owners in real-time.
                                     </p>
                                 </div>
                             </div>
                             <div className="flex gap-3 p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
-                                {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
-                                    <FaGlobe className="text-2xl" />
-                                </div> */}
+
                                 <div className="block">
-                                    {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
-                                        Sub Heading
-                                    </h3> */}
+
                                     <p className="text-sm text-neutral-500">
                                         Our platform streamlines the logistics process by addressing issues related to fraudulent orders, empty returns, payment delays, unfair pricing, and poor communication, ultimately increasing productivity for all users.
                                     </p>
@@ -61,39 +53,27 @@ export function AboutSection() {
                             pathname.includes('/about') ? (
                                 <div className="block">
                                     <div className="flex p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
-                                        {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
-                                    <FaGlobe className="text-2xl" />
-                                </div> */}
+
                                         <div className="block">
-                                            {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
-                                        Sub Heading
-                                    </h3> */}
+
                                             <p className="text-sm text-neutral-500">
                                                 We operates an online logistics marketplace where anyone, anywhere, at any time can find and book reliable logistics services, accessing a network of trusted professionals.
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
-                                        {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
-                                    <FaGlobe className="text-2xl" />
-                                </div> */}
+
                                         <div className="block">
-                                            {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
-                                        Sub Heading
-                                    </h3> */}
+
                                             <p className="text-sm text-neutral-500">
                                                 In addition to facilitating connections, we leverage the latest technologies, including GPS tracking, automatic documentation, and instant notifications.
                                             </p>
                                         </div>
                                     </div>
                                     <div className="flex p-4 md:p-6 mb-3 bg-white border-2 border-indigo-100 rounded-xl">
-                                        {/* <div className="p-4 h-min rounded-lg bg-indigo-50 text-indigo-500">
-                                    <FaGlobe className="text-2xl" />
-                                </div> */}
+
                                         <div className="block">
-                                            {/* <h3 className="text-lg text-neutral-800 font-semibold mb-1">
-                                        Sub Heading
-                                    </h3> */}
+
                                             <p className="text-sm text-neutral-500">
                                                 As the first freight marketplace in Northern Nigeria, Cari Load has pioneered a new era in logistics, setting a benchmark for efficiency and reliability. With over 1,000+ registered companies (truck owners and load owners) from across Nigeria actively using our platform, we are revolutionizing the way goods are transported                                            </p>
                                         </div>

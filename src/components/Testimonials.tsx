@@ -82,7 +82,6 @@ export function Testimonials() {
     return (
         <>
             <div className="md:w-10/12 mx-auto flex flex-col items-center justify-center px-4 py-10">
-                {/* Testimonials */}
                 <div className="block w-full">
                     <h5 className="text-xs font-bold flex items-center justify-center mb-3 text-neutral-500">
                         <BsDashLg className="text-3xl text-indigo-500 me-2" />
